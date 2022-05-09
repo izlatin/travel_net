@@ -1,5 +1,7 @@
+from os.path import join
 from pathlib import Path
 import environ
+from django.urls import reverse_lazy
 
 env = environ.Env()
 environ.Env.read_env()
@@ -43,7 +45,7 @@ ROOT_URLCONF = 'travelnet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [str(join(BASE_DIR, 'templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,6 +86,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = join(BASE_DIR, 'sent_emails')
 # Internationalization
 
 LANGUAGE_CODE = 'ru'
@@ -105,6 +109,9 @@ STATICFILES_DIRS = [
 ]
 
 # Default primary key field type
+LOGIN_URL = reverse_lazy('users:login')
+LOGIN_REDIRECT_URL = reverse_lazy('users:profile')
+LOGOUT_REDIRECT_URL = reverse_lazy('users:login')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
