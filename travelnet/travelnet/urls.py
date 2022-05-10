@@ -7,7 +7,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('users.urls')),
-    path('auth/', include('django.contrib.auth.urls'))
+    path('map/', include('map.urls'))
 ]
 
 if settings.DEBUG:

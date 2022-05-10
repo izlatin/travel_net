@@ -1,12 +1,13 @@
+import environ
+
 from os.path import join
 from pathlib import Path
-import environ
 from django.urls import reverse_lazy
 
 env = environ.Env()
-environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(join(BASE_DIR, '.env'))
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 SECRET_KEY = env('SECRET_KEY')
@@ -22,6 +23,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
+
+    'map',
 
     'sorl.thumbnail',
     'django_cleanup.apps.CleanupConfig',
