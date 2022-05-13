@@ -3,4 +3,4 @@ from django.shortcuts import render
 
 
 def feed(request):
-    return HttpResponse('feed')
+    return render(request, 'homepage/feed.html')
