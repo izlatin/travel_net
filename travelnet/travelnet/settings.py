@@ -22,6 +22,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
+    'homepage.apps.HomepageConfig',
+    'post.apps.PostConfig',
+    'rating.apps.RatingConfig',
+    'about.apps.AboutConfig',
 
     'sorl.thumbnail',
     'django_cleanup.apps.CleanupConfig',
