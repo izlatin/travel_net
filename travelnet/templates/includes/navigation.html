@@ -1,6 +1,6 @@
-<header>
-  <aside>
-    <p> Меню </p>
+
+<aside>
+    <h2> Меню </h2>
     <a href="{% url 'homepage:home' %}">
       <i class="fa fa-user-o" aria-hidden="true"></i>
       Главная
@@ -13,9 +13,13 @@
       <i class="fa fa-star-o" aria-hidden="true"></i>
       Войти
     </a>
-    <a href="{% url 'about:description' %}">
+    <a href="{% url 'about:faq' %}">
       <i class="fa fa-trash-o" aria-hidden="true"></i>
       Помощь
     </a>
-  </aside>
-</header>
+    <a href="{% url 'about:description' %}">
+      <i class="fa fa-trash-o" aria-hidden="true"></i>
+      О проекте
+    </a>
+    {% include "includes/footer.html" %}
+</aside>

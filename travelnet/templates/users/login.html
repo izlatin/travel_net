@@ -1,15 +1,16 @@
-<html>
-    <h1>Логин</h1>
-    {% if form.errors %}
-        {% for field in form %}
-            {% for error in field.errors %}
-                {{ error|escape }}
-            {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
+{% extends 'base.html' %}
+{% block content %}
+<h1>Вход</h1>
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
             {{ error|escape }}
         {% endfor %}
-    {% endif %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        {{ error|escape }}
+    {% endfor %}
+{% endif %}
 <form method="post" action="">
 
     {% csrf_token %}
@@ -30,7 +31,8 @@
     {% endfor %}
 
     <button type="submit">Войти</button>
-    <a href="{% url 'users:password_reset' %}">Забыли пароль??</a>
+    <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
 
 </form>
-</html>
+<h2><a href="{% url 'users:signup' %}">Регистрация</a></h2>
+{% endblock %}
