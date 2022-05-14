@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'homepage.apps.HomepageConfig',
-    'post.apps.PublicationsConfig',
+    'publications.apps.PublicationsConfig',
     'rating.apps.RatingConfig',
     'about.apps.AboutConfig',
 

@@ -1,13 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.db import models
-
-from travelnet.users.models import CustomUser
 
 
 class UserSocialActionMixin(models.Model):
     # миксин для лайков / постов / чего-то аналогичного
 
     # мб вместо каскада поставить что-то дефолтное вроде собачки в ВК?
-    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     datetime_created = models.DateTimeField(auto_now_add=True)
     visible = models.BooleanField(default=True)
 
