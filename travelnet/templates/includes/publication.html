@@ -1,0 +1,11 @@
+<div class="post">
+    {# TODO: добавить нормальные стили с bootstrap #}
+    <p>Текст: {{ post.text }}</p>
+    <p>Автор: {{ post.author }}</p>
+    <p>Дата: {{ post.datetime_created }}</p>
+    {% if user.authorized %}
+        {{ form }}
+    {% endif %}
+</div>
+
+
