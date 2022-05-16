@@ -12,7 +12,7 @@ class ProfileInlined(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     model = CustomUser
     fieldsets = ((None, {
-            'fields': ('username', 'email', 'image')
+            'fields': ('username', 'email', 'image', 'follows')
         }),)
     list_display = ('username', 'email', 'image_tmb', 'is_staff', 'is_active',)
     list_filter = ('username', 'email', 'is_staff', 'is_active',)
