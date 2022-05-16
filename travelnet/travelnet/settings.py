@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'users.apps.UsersConfig',
     'homepage.apps.HomepageConfig',
     'publications.apps.PublicationsConfig',
@@ -29,6 +30,7 @@ INSTALLED_APPS = [
 
     'sorl.thumbnail',
     'django_cleanup.apps.CleanupConfig',
+    'debug_toolbar'
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -42,6 +44,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'travelnet.urls'
@@ -121,3 +125,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+if DEBUG:
+    # нужно для debug_toolbar
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js", True)
