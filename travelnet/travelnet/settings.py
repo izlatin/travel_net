@@ -4,7 +4,7 @@ import environ
 from django.urls import reverse_lazy
 
 env = environ.Env()
-environ.Env.read_env()
+environ.Env.read_env(env_file='.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
