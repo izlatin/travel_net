@@ -3,8 +3,8 @@ from django.shortcuts import render
 
 
 def description(request):
-    return HttpResponse('thats it')
+    return render(request, 'about/description.html')
 
 
 def faq(request):
-    return HttpResponse('fuck')
+    return render(request, 'about/faq.html')
