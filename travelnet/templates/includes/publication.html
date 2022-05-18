@@ -1,12 +1,20 @@
-<div class="post">
-    {# TODO: добавить нормальные стили с bootstrap #}
-    <p>Текст: {{ post.text }}</p>
-    <p>Автор: {{ post.author }}</p>
-    <p>Дата: {{ post.datetime_created }}</p>
+{% load thumbnail %}
 
-    <p>
+<div class="container-lg">
+    <div class="post-header">
+        {% thumbnail post.author.image "50x50" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
+        <span>{{ post.author }}</span>
+        <p class="text-muted">Опубликованно {{ post.datetime_created }}</p>
+    </div>
+
+    <div class="post-main">
+        <p class="">{{ post.text }}</p>
+    </div>
+    <div class="post-footer">
         Лайков: <span>{{ post.publicationlike_set.count }}</span>
-    </p>
+    </div>
     {% if request.user.is_authorized or 1 %}
         {# TODO: maybe ajax? #}
         <form action="" method="POST">
