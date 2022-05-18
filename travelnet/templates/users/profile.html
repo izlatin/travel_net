@@ -1,13 +1,11 @@
 {% extends "base.html" %}
-{% block title %}
-  Мой профиль
-{% endblock %}
 {% block content %}
-<!--  <h1>Мой профиль</h1>-->
-<!--  <form action="" method="post">-->
-<!--    {% csrf_token %}-->
-<!--    {{ data_form.as_p }}-->
-<!--    {{ profile_form.as_p }}-->
-<!--    <button type="submit">Сохранить</button>-->
-<!--  </form>-->
+  <h1>Мой профиль</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ data_form.as_p }}
+    {{ profile_form.as_p }}
+    <button type="submit">Сохранить</button>
+  </form>
+  <h2><a href="{% url 'users:logout' %}">Выйти</a></h2>
 {% endblock %}
