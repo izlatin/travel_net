@@ -12,6 +12,11 @@
         <h4 class="username"><a href="{% url 'users:user_detail' user_id=post.author.id %}">{{ post.author.username }}</a></h4><br>
         <p class="text-muted">Опубликованно {{ post.datetime_created }}</p>
     </div>
+    
+    <div class="location">
+        <img class="point" src="{% static 'img/other/point.png' %}">
+        <div class="location-place">{{post.location}}</div>
+    </div><br>
 
     <div class="post-main">
         <span value="{{ post.id }}" hidden></span>

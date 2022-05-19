@@ -180,3 +180,12 @@ div.publication-avatar{
     float: left;
     bottom: 0px;
 }
+
+.point{
+    float: left;
+}
+
+.location-place{
+    font-style: italic;
+    text-decoration: underline;
+}
