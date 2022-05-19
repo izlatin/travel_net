@@ -5,6 +5,7 @@ from pathlib import Path
 from django.urls import reverse_lazy
 
 env = environ.Env()
+environ.Env.read_env(env_file='.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(join(BASE_DIR, '.env'))
@@ -22,18 +23,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'users.apps.UsersConfig',
+    'homepage.apps.HomepageConfig',
+    'publications.apps.PublicationsConfig',
+    'rating.apps.RatingConfig',
+    'about.apps.AboutConfig',
 
     'map',
 
     'sorl.thumbnail',
     'django_cleanup.apps.CleanupConfig',
+    'debug_toolbar'
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -41,6 +47,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'travelnet.urls'
@@ -120,3 +128,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+if DEBUG:
+    # нужно для debug_toolbar
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js", True)

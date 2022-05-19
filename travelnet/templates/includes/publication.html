@@ -1,0 +1,35 @@
+<div class="post">
+    {# TODO: добавить нормальные стили с bootstrap #}
+    <p>Текст: {{ post.text }}</p>
+    <p>Автор: {{ post.author }}</p>
+    <p>Дата: {{ post.datetime_created }}</p>
+
+    <p>
+        Лайков: <span>{{ post.publicationlike_set.count }}</span>
+    </p>
+    {% if request.user.is_authorized or 1 %}
+        {# TODO: maybe ajax? #}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Лайкнуть!">
+        </form>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <label for="comment">Ваш комментарий</label>
+            <input name="comment" id="comment" type="text">
+            <input type="submit" value="Лайкнуть!">
+        </form>
+    {% endif %}
+    <div class="comments">
+        {% for comment in post.comment_set.all %}
+            <div class="comment">
+                <h3>коммент от {{ comment.author }}</h3>
+                <h4>Текст: {{ comment.text }}</h4>
+            </div>
+        {% empty %}
+            <p>оп, еще никто не оставлял комментарии здесь..</p>
+        {% endfor %}
+    </div>
+</div>
+
+
