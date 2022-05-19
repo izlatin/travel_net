@@ -1,12 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.fields.files import FieldFile
 from django.utils.translation import ugettext_lazy as _
 
-from publications.managers import PublicationManager
-from publications.validators import validate_photo_or_video
-
+from .managers import PublicationManager
+from .validators import validate_photo_or_video
 
 
 # TODO: move these mixins to a separate file
