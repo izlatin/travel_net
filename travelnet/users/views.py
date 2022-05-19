@@ -27,21 +27,23 @@ def signup(request):
 def profile(request):
     user = request.user
     if request.method == 'POST':
-        data_form = UserDataForm(request.POST, instance=request.user)
+        data_form = UserDataForm(request.POST, request.FILES, instance=request.user)
         profile_form = ProfileForm(request.POST)
         if data_form.is_valid() and profile_form.is_valid():
-            user.first_name = data_form.cleaned_data.get('first_name')
-            user.last_name = data_form.cleaned_data.get('last_name')
-            user.email = data_form.cleaned_data.get('email')
-            user.email = data_form.cleaned_data.get('image')
+            data_form.save()
             user.profile.birthday = profile_form.cleaned_data["birthday"]
             user.save()
+            return redirect(reverse('users:profile_edit_success'))
     else:
         data_form = UserDataForm(initial={"email": user.email, "first_name": user.first_name,
-                                          "last_name": user.last_name})
+                                          "last_name": user.last_name, "remove_photo": False})
         profile_form = ProfileForm(initial={"birthday": user.profile.birthday})
     context = {
         "data_form": data_form,
         "profile_form": profile_form
     }
     return render(request, "users/profile.html", context)
+
+
+def profile_edit_success(request):
+    return redirect('users:profile')
