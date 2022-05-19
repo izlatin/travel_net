@@ -42,9 +42,8 @@ class Location(models.Model):
 class PublicationManager(models.Manager):
     def popular_posts(self, post_count):
         # TODO: try to make a better "popular posts" algorithm, maybe use some metadata?
-        # TODO: not sure the ordering is correct here, check it (+below aswell)
         return self.filter(visible=True).prefetch_related('publicationlike_set').prefetch_related(
-            'comment_set').order_by('publicationlike', '-datetime_created')[:post_count]
+            'comment_set').order_by('-publicationlike', '-datetime_created')[:post_count]
 
     def user_feed(self, user, post_count):
         return self.filter(visible=True).prefetch_related('publicationlike_set').prefetch_related(

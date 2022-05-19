@@ -4,7 +4,7 @@ import environ
 from django.urls import reverse_lazy
 
 env = environ.Env()
-environ.Env.read_env()
+environ.Env.read_env('.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,7 +30,9 @@ INSTALLED_APPS = [
 
     'sorl.thumbnail',
     'django_cleanup.apps.CleanupConfig',
-    'debug_toolbar'
+    'debug_toolbar',
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -45,7 +47,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'travelnet.urls'
@@ -130,6 +131,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
 
 if DEBUG:
     # нужно для debug_toolbar
