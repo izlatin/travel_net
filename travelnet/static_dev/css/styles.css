@@ -181,6 +181,10 @@ div.publication-avatar{
     bottom: 0px;
 }
 
+.like-button:hover {
+    cursor: pointer;
+}
+
 .point{
     float: left;
 }
