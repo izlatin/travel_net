@@ -1,12 +1,14 @@
+import environ
+
 from os.path import join
 from pathlib import Path
-import environ
 from django.urls import reverse_lazy
 
 env = environ.Env()
-environ.Env.read_env('.env')
+environ.Env.read_env(env_file='.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(join(BASE_DIR, '.env'))
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 SECRET_KEY = env('SECRET_KEY')
@@ -28,6 +30,8 @@ INSTALLED_APPS = [
     'rating.apps.RatingConfig',
     'about.apps.AboutConfig',
 
+    'map',
+
     'sorl.thumbnail',
     'django_cleanup.apps.CleanupConfig',
     'debug_toolbar',
@@ -46,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
 ]
 
 ROOT_URLCONF = 'travelnet.urls'
@@ -131,7 +134,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
