@@ -45,7 +45,7 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     username = models.CharField(_('username'), unique=True, max_length=255)
     email = models.EmailField(_('email address'), unique=True)
-    image = models.ImageField(_('аватар'), upload_to='uploads/', null=True)
+    image = models.ImageField(_('аватар'), upload_to='uploads/', null=True, blank=True)
 
     follows = models.ManyToManyField('self', verbose_name=_('Подписки'), symmetrical=False)
 

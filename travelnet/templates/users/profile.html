@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
   <h1>Мой профиль</h1>
-  <form action="" method="post">
+  <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ data_form.as_p }}
+    {% if user.image %}
+      <img src="/media/{{ user.get_image_300x300 }}">
+    {% else %}
+     <p>Нет изображения</p>
+    {% endif %}
     {{ profile_form.as_p }}
     <button type="submit">Сохранить</button>
   </form>
