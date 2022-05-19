@@ -3,9 +3,11 @@
 
 {% block content %}
 
-{% for post in publications %}
-    {% include "includes/publication.html" %}
-{% endfor %}
+    {% for post in publications %}
+        {% include "includes/publication.html" %}
+    {% empty %}
+        <p>Хм, никто ничего не опубликовал. Эй, админ, добавь что-нибудь!</p>
+    {% endfor %}
 
 
 {% endblock %}

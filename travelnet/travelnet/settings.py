@@ -1,12 +1,14 @@
+import environ
+
 from os.path import join
 from pathlib import Path
-import environ
 from django.urls import reverse_lazy
 
 env = environ.Env()
-environ.Env.read_env()
+environ.Env.read_env(env_file='.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(join(BASE_DIR, '.env'))
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 SECRET_KEY = env('SECRET_KEY')
@@ -21,14 +23,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'users.apps.UsersConfig',
     'homepage.apps.HomepageConfig',
     'publications.apps.PublicationsConfig',
     'rating.apps.RatingConfig',
     'about.apps.AboutConfig',
 
+    'map',
+
     'sorl.thumbnail',
     'django_cleanup.apps.CleanupConfig',
+    'debug_toolbar',
+    'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -121,3 +129,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
+
+if DEBUG:
+    # нужно для debug_toolbar
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js", True)
