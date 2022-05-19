@@ -1,8 +1,12 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.fields.files import FieldFile
 from django.utils.translation import ugettext_lazy as _
+
 from publications.managers import PublicationManager
 from publications.validators import validate_photo_or_video
+
 
 
 # TODO: move these mixins to a separate file
@@ -27,6 +31,13 @@ class AuthorMixin(models.Model):
         abstract = True
 
 
+class AuthorMixin(models.Model):
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+
+
 class Location(models.Model):
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
@@ -38,10 +49,6 @@ class Location(models.Model):
     building = models.CharField(max_length=10, null=True)
 
     place_alias = models.CharField('Название места/заведения', max_length=150, null=True, blank=True)
-
-    class Meta:
-        verbose_name = 'Локация'
-        verbose_name_plural = 'Локации'
 
 
 class Publication(AuthorMixin, DatetimeCreatedMixin, VisibleMixin):
