@@ -1,3 +1,11 @@
+body {
+  font-family: 'Montserrat';
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  background-color: #aeb7c2;
+}
+
 aside {
   display: block;
   float: left;
@@ -65,13 +73,6 @@ aside h2 {
   padding: 40px 0;
 }
 
-body {
-  font-family: 'Montserrat';
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-}
-
 main{
     overflow: hidden;
     vertical-align: center;
@@ -102,3 +103,80 @@ main{
   right:5px;
 }
 */
+h1.username{
+    margin:5px;
+    margin-top: 20px;
+}
+
+div.user-info{
+    width: 30%;
+    padding: 10px;
+    border: 2px solid black;
+    margin: 5px;
+}
+
+div.avatar{
+    width: 200px;
+    height: 200px;
+    margin: 5px;
+    padding: 10px;
+    background-color: gray;
+}
+
+h3.user-info, h4.user-info{
+    font-weight: normal;
+}
+
+.publication{
+    margin: auto;
+    width: 80%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    background-color: white;
+    padding: 5px;
+}
+
+.post-header{
+    padding: 5px;
+}
+
+h4.username{
+    float: left;
+    margin: 5px;
+    font-size: 18px;
+}
+div.publication-avatar{
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    padding: 2px;
+    background-color: gray;
+}
+.text-muted{
+    float left;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.post-main{
+    margin: 10px;
+}
+
+.comments{
+    font-size: 14px;
+    border-top: 1px solid gray;
+    margin-top: 10px;
+}
+
+.comment-text{
+    margin-left: 5%;
+    border-bottom: 1px solid gray;
+    width: 90%;
+}
+
+.like-button{
+    float: left;
+    bottom: 0px;
+}

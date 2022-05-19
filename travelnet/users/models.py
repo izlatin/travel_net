@@ -54,6 +54,9 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
+    def get_image_200x200(self):
+        return get_thumbnail(self.image, '200x200', crop='center', quality=51)
+
     def get_image_300x300(self):
         return get_thumbnail(self.image, '300x300', crop='center', quality=51)
 
@@ -63,6 +66,7 @@ class CustomUser(AbstractUser):
                 f'<img src="{self.image.url}" width="50">'
             )
         return 'Нет изображения'
+
     image_tmb.short_description = 'превью'
     image_tmb.allow_tags = True
 

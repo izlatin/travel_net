@@ -47,3 +47,11 @@ def profile(request):
 
 def profile_edit_success(request):
     return redirect('users:profile')
+
+
+def user_detail(request, user_id):
+    user = get_user_model().objects.get(pk=user_id)
+    context = {
+        'user': user,
+    }
+    return render(request, "users/user_detail.html", context)

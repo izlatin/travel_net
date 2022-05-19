@@ -47,6 +47,13 @@ class Location(models.Model):
 
     place_alias = models.CharField('Название места/заведения', max_length=150, null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.country}, {self.city}'
+
+    class Meta:
+        verbose_name = 'Место'
+        verbose_name_plural = 'Места'
+
 
 class Publication(AuthorMixin, DatetimeCreatedMixin, VisibleMixin):
     text = models.TextField('Текст')
@@ -57,6 +64,9 @@ class Publication(AuthorMixin, DatetimeCreatedMixin, VisibleMixin):
     class Meta:
         verbose_name = 'Публикация'
         verbose_name_plural = 'Публикации'
+
+    def __str__(self):
+        return f'{self.author} in {self.location}'
 
 
 class Attachment(DatetimeCreatedMixin, AuthorMixin):
