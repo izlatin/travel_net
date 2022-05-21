@@ -3,7 +3,7 @@ body {
   width: 100%;
   height: 100vh;
   margin: 0;
-  background-color: #aeb7c2;
+  background-color: #e3e8ee;
 }
 
 aside {
@@ -156,6 +156,10 @@ div.publication-avatar{
 .like-button{
     float: left;
     bottom: 0px;
+}
+
+.like-button:hover {
+    cursor: pointer;
 }
 
 .point{

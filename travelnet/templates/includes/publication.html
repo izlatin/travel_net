@@ -21,7 +21,6 @@
     <div class="post-main">
         <span value="{{ post.id }}" hidden></span>
         <p class="">{{ post.text }}</p>
-        {# TODO: add map #}
     </div>
 
     <div class="post-footer">
@@ -31,7 +30,7 @@
                     data-is-liked="{% if user.id in post.publicationlike_set.users_liked_list %}1{% else %}0{% endif %}"
                     data-id="{{ post.id }}"
                     src="{% if user.id in post.publicationlike_set.users_liked_list %}{% static 'img/other/liked.png' %}{% else %}{% static 'img/other/unliked.png' %}{% endif %}"
-                    width="25" alt="post unliked">
+                    width="25" alt="like/unlike button">
             <div><span class="like-count" id="like_count">{{ post.publicationlike_set.count }}</span></div>
         </div>
         <div class="comments">

@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-{% block title %}заголовок крутой{% endblock %}
+{% load static %}
+
+{% block title %}Ваша лента{% endblock %}
+{% block scripts %}<script src="{% static 'js/likes.js' %}"></script>{% endblock %}
 
 {% block content %}
 

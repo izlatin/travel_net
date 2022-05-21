@@ -1,38 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Вход</h1>
-{% if form.errors %}
-    {% for field in form %}
-        {% for error in field.errors %}
-            {{ error|escape }}
-        {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-        {{ error|escape }}
-    {% endfor %}
-{% endif %}
-<form method="post" action="">
-
-    {% csrf_token %}
-
-    {% for field in form %}
-         <label for="{{ field.id_for_label }}">
-             {{ field.label }}
-                {% if field.field.required %}
-                    <span>*</span>
-                {% endif %}
-         </label>
-        {{ field }}
-        {% if field.help_text %}
-            <small id="{{ field.id_for_label }}-help">
-                {{ field.help_text|safe }}
-            </small>
+    <h1>Вход</h1>
+        <div class="row text-left">
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    {{ error|escape }}
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                {{ error|escape }}
+            {% endfor %}
         {% endif %}
-    {% endfor %}
 
-    <button type="submit">Войти</button>
-    <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
+        <form method="post" action="">
+            {% csrf_token %}
 
-</form>
-<h2><a href="{% url 'users:signup' %}">Регистрация</a></h2>
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}" class="col-lg-4 col-sm-12">
+                    {{ field.label }}
+                    {% if field.field.required %}
+                        <span>*</span>
+                    {% endif %}
+                </label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small id="{{ field.id_for_label }}-help">
+                        {{ field.help_text|safe }}
+                    </small>
+                {% endif %}
+                <br>
+
+            {% endfor %}
+
+            <div class="row">
+                <div class="col-12 justify-content-evenly">
+                    <button type="submit" class="btn btn-outline-primary">Войти</button>
+                </div>
+                <div class="col-9"></div>
+                <div class="col-3">
+                    <a class="" href="{% url 'users:password_reset' %}">Забыли пароль?</a>
+
+                </div>
+            </div>
+        </form>
+        <h2><a href="{% url 'users:signup' %}">Регистрация</a></h2>
+    </div>
 {% endblock %}

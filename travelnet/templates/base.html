@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <title>{% block title%} Travel.Net {% endblock %}</title>
+    <title>{% block title%} Travel.Net {% endblock %} - Travel.Net</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/fav/apple-touch-icon.png' %}">
@@ -12,6 +12,7 @@
     <link rel="mask-icon" href="{% static 'img/fav/safari-pinned-tab.svg' %}" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+    {% block head %}{% endblock %}
   </head>
   <body>
     {% include "includes/navigation.html" %}
@@ -19,4 +20,5 @@
       {% block content %} Главная информация {% endblock %}
     </main>
   </body>
+  {% block scripts %}{% endblock %}
 </html>
