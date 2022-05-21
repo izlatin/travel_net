@@ -4,10 +4,14 @@
 <div class="container-lg publication">
     <div class="post-header">
         <div class="publication-avatar">
-            {% thumbnail post.author.image "50x50" crop="center" as im %}
-                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"
-                     alt="{{ post.author }}'s profile picture">
-            {% endthumbnail %}
+            {% if post.author.image %}
+                {% thumbnail post.author.image "50x50" crop="center" as im %}
+                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"
+                         alt="{{ post.author }}'s profile picture">
+                {% endthumbnail %}
+            {% else %}
+                {# TODO: standard user pfp #}
+            {% endif %}
         </div>
         <h4 class="username"><a href="{% url 'users:user_detail' user_id=post.author.id %}">{{ post.author.username }}</a></h4><br>
         <p class="text-muted">Опубликованно {{ post.datetime_created }}</p>

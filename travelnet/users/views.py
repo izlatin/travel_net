@@ -15,8 +15,9 @@ def signup(request):
             email = form.cleaned_data.get('email')
             raw_password = form.cleaned_data.get('password1')
             user = get_user_model().objects.create_user(password=raw_password, username=username, email=email)
+            # why authenticate() when we just created the user?
             # user = authenticate(email=email, password=raw_password)
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            login(request, user)
             return redirect(reverse('homepage:home'))
     else:
         form = SignupForm()
