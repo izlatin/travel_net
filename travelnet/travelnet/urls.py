@@ -5,7 +5,7 @@ from django.urls import path, include
 from django.conf import settings
 from rest_framework import routers
 
-# from travelnet.rating import views
+from rating import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -18,7 +18,7 @@ urlpatterns = [
     path('about/', include('about.urls')),
 
     # TODO: убрать это отсюда
-    # path('api/v1/likes', views.PublicationLikeViews.as_view())
+    path('api/v1/likes', views.PublicationLikeViews.as_view())
 ]
 
 if settings.DEBUG:
