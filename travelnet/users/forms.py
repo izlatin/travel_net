@@ -22,6 +22,14 @@ class UserDataForm(forms.ModelForm):
     remove_photo = forms.BooleanField(label="Удалить фото", required=False, initial=False)
     image = forms.ImageField(label='Аватар', required=False)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            if visible.widget_type == 'checkbox':
+                visible.field.widget.attrs['class'] = 'form-check-control'
+            else:
+                visible.field.widget.attrs['class'] = 'form-control'
+
     def clean(self):
         email = self.cleaned_data.get('email')
         if get_user_model().objects.filter(email=email).exclude(pk=self.instance.pk):
@@ -53,6 +61,11 @@ class UserDataForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control col-2 w-auto ms-3'
+
     class Meta:
         model = Profile
         fields = ['birthday']

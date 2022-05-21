@@ -1,90 +1,92 @@
 body {
-  font-family: 'Montserrat';
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  background-color: #e3e8ee;
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    background-color: #e3e8ee;
 }
 
 aside {
-  display: block;
-  float: left;
-  color: #fff;
-  width: 250px;
-  padding-left: 20px;
-  height: 100%;
-  min-height: 350px;
-  background-image: linear-gradient(30deg , #0048bd, #44a7fd);
-  border-top-right-radius: 80px;
+    display: block;
+    float: left;
+    color: #fff;
+    width: 250px;
+    padding-left: 20px;
+    height: 100%;
+    min-height: 350px;
+    background-image: linear-gradient(30deg, #0048bd, #44a7fd);
+    border-top-right-radius: 80px;
 }
 
 aside a {
-  font-size: 16px;
-  color: #fff;
-  display: block;
-  padding: 12px;
-  padding-left: 30px;
-  text-decoration: none;
-  -webkit-tap-highlight-color:transparent;
+    font-size: 16px;
+    color: #fff;
+    display: block;
+    padding: 12px;
+    padding-left: 30px;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 aside a:hover {
-  color: #3f5efb;
-  background: #fff;
-  outline: none;
-  position: relative;
-  background-color: #fff;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
+    color: #3f5efb;
+    background: #fff;
+    outline: none;
+    position: relative;
+    background-color: #fff;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 
 aside a i {
-  margin-right: 5px;
+    margin-right: 5px;
 }
 
 aside a:hover::after {
-  content: "";
-  position: absolute;
-  background-color: transparent;
-  bottom: 100%;
-  right: 0;
-  height: 35px;
-  width: 35px;
-  border-bottom-right-radius: 18px;
-  box-shadow: 0 20px 0 0 #fff;
+    content: "";
+    position: absolute;
+    background-color: transparent;
+    bottom: 100%;
+    right: 0;
+    height: 35px;
+    width: 35px;
+    border-bottom-right-radius: 18px;
+    box-shadow: 0 20px 0 0 #fff;
 }
 
 aside a:hover::before {
-  content: "";
-  position: absolute;
-  background-color: transparent;
-  top: 38px;
-  right: 0;
-  height: 35px;
-  width: 35px;
-  border-top-right-radius: 18px;
-  box-shadow: 0 -20px 0 0 #fff;
+    content: "";
+    position: absolute;
+    background-color: transparent;
+    top: 38px;
+    right: 0;
+    height: 35px;
+    width: 35px;
+    border-top-right-radius: 18px;
+    box-shadow: 0 -20px 0 0 #fff;
 }
 
 aside h2 {
-  margin: 0;
-  font-size: 30px;
-  font-weight: normal;
-  padding: 40px 0;
+    margin: 0;
+    font-size: 30px;
+    font-weight: normal;
+    padding: 40px 0;
 }
 
-main{
+main {
     overflow: hidden;
     vertical-align: center;
     padding-left: 10px;
 }
-.footer{
+
+.footer {
     position: absolute;
     display: flex;
     width: 250px;
     top: max(300px, 92vh);
     font-size: 14px;
 }
+
 /*
 .social {
   height: 0;
@@ -103,19 +105,19 @@ main{
   right:5px;
 }
 */
-h1.username{
-    margin:5px;
+h1.username {
+    margin: 5px;
     margin-top: 20px;
 }
 
-div.user-info{
+div.user-info {
     width: 30%;
     padding: 10px;
     border: 2px solid black;
     margin: 5px;
 }
 
-div.avatar{
+div.avatar {
     width: 200px;
     height: 200px;
     margin: 5px;
@@ -123,11 +125,11 @@ div.avatar{
     background-color: gray;
 }
 
-h3.user-info, h4.user-info{
+h3.user-info, h4.user-info {
     font-weight: normal;
 }
 
-.publication{
+.publication {
     margin: auto;
     width: 80%;
     margin-top: 20px;
@@ -137,16 +139,17 @@ h3.user-info, h4.user-info{
     padding: 5px;
 }
 
-.post-header{
+.post-header {
     padding: 5px;
 }
 
-h4.username{
+h4.username {
     float: left;
     margin: 5px;
     font-size: 18px;
 }
-div.publication-avatar{
+
+div.publication-avatar {
     float: left;
     width: 50px;
     height: 50px;
@@ -154,29 +157,30 @@ div.publication-avatar{
     padding: 2px;
     background-color: gray;
 }
-.text-muted{
-    float left;
+
+.text-muted {
+    /*float left;*/
     font-size: 14px;
     font-style: italic;
 }
 
-.post-main{
+.post-main {
     margin: 10px;
 }
 
-.comments{
+.comments {
     font-size: 14px;
     border-top: 1px solid gray;
     margin-top: 10px;
 }
 
-.comment-text{
+.comment-text {
     margin-left: 5%;
     border-bottom: 1px solid gray;
     width: 90%;
 }
 
-.like-button{
+.like-button {
     float: left;
     bottom: 0px;
 }
@@ -185,11 +189,11 @@ div.publication-avatar{
     cursor: pointer;
 }
 
-.point{
+.point {
     float: left;
 }
 
-.location-place{
+.location-place {
     font-style: italic;
     text-decoration: underline;
 }
