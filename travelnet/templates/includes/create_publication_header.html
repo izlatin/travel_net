@@ -1,3 +1,40 @@
+{% load thumbnail %}
+{% load static %}
+
 <div class="container-lg publication">
-    <a href="#">создать публикацию (юху!)</a>
+    <div class="post-header">
+        <div class="publication-avatar">
+            {% if user.image %}
+                {% thumbnail user.image "50x50" crop="center" as im %}
+                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"
+                         alt="{{ user }}'s profile picture">
+                {% endthumbnail %}
+            {% else %}
+                 TODO: standard user pfp
+            {% endif %}
+        </div>
+        <h4 class="username"><a href="{% url 'users:user_detail' user_id=user.id %}">{{ user.username }}</a></h4><br>
+        <p class="text-muted">Еще не опубликованно!</p>
+    </div>
+
+    <div class="location">
+        <img class="point" src="{% static 'img/other/point.png' %}">
+        <input type="search">
+        <div class="location-place">локейшен (добавить форму, выбирать надо)</div>
+    </div><br>
+
+    <div class="post-main">
+        <p class=""><textarea class="form-control" placeholder="Сегодня я побывал в пабе на старом арбате.."></textarea></p>
+    </div>
+
+    <div class="post-footer">
+        <div class="likes" id="likes">
+            <img title="вы не можете лайкнуть пост, которого еще нет!" class="like-button-disabled" src="{% static 'img/other/unliked.png' %}" width="25" alt="like/unlike button">
+            <div><span class="like-count" id="like_count">0</span></div>
+        </div>
+        <div class="comments">
+            <p class="text-muted">оп, еще никто не оставлял комментарии здесь..</p>
+        </div>
+    </div>
+
 </div>

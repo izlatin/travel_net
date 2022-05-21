@@ -136,7 +136,7 @@ h3.user-info, h4.user-info {
     margin-top: 20px;
     margin-bottom: 20px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #ecedee;
     padding: 5px;
 }
 
@@ -190,6 +190,15 @@ div.publication-avatar {
     cursor: pointer;
 }
 
+.like-button-disabled {
+    float: left;
+    bottom: 0px;
+}
+
+.like-button-disabled:hover {
+    cursor: not-allowed;
+}
+
 .point {
     float: left;
 }
@@ -197,4 +206,8 @@ div.publication-avatar {
 .location-place {
     font-style: italic;
     text-decoration: underline;
+}
+
+.add-publication {
+    font-size: 1.2rem;
 }
