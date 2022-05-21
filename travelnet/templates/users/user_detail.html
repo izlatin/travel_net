@@ -15,5 +15,10 @@
             <h3><a href="{% url 'users:profile' %}">Редактировать профиль</a></h3>
         {% endif %}
     </div>
-    <h2>Записи пользователя</h2>
+    {% if current_user.id == user.id %}
+        <h2><a href="{% url 'publications:create_publication' %}">Написать пост</a></h2>
+        <h2>Мои публикации</h2>
+    {% else %}
+        <h2>Мои записи</h2>
+    {% endif %}
 {% endblock %}
