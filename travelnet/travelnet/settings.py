@@ -8,7 +8,7 @@ env = environ.Env()
 environ.Env.read_env(env_file='.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(join(BASE_DIR, '.env'))
+environ.Env.read_env(join(BASE_DIR.parent, '.env'))
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 SECRET_KEY = env('SECRET_KEY')
