@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'publications.apps.PublicationsConfig',
     'rating.apps.RatingConfig',
     'about.apps.AboutConfig',
+    'core.apps.CoreConfig',
 
     'map',
 
