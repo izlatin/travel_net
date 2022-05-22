@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Информация о пользователе
+{% endblock %}
+
+{% block content %}
+    <h1 class="username">{{user.username}}</h1>
+    <div class="avatar"><img src="/media/{{user.get_image_200x200}}"></div>
+    <div class="user-info">
+        <h3 class="user-info">Имя: {{ user.first_name|default:"Не указано" }}</h3>
+        <h3 class="user-info">Фамилия: {{ user.last_name|default:"Не указано" }}</h3>
+        <h4 class="user-info">День рождения: {{ user.profile.birthday|default:"Не указано" }}</h4>
+        {% if current_user.id == user.id %}
+            <h3><a href="{% url 'users:profile' %}">Редактировать профиль</a></h3>
+        {% endif %}
+    </div>
+    {% if current_user.id == user.id %}
+<!--        <h2><a href="{% url 'publications:create_publication' %}">Написать пост</a></h2>-->
+        <h2>Мои публикации</h2>
+    {% else %}
+        <h2>Мои записи</h2>
+    {% endif %}
+{% endblock %}

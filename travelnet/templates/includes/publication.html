@@ -3,38 +3,45 @@
 
 <div class="container-lg publication">
     <div class="post-header">
-        {% thumbnail post.author.image "50x50" crop="center" as im %}
-            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"
-                 alt="{{ post.author }}'s profile picture">
-        {% endthumbnail %}
-        <span>{{ post.author }}</span>
+        <div class="publication-avatar">
+            {% if post.author.image %}
+                {% thumbnail post.author.image "50x50" crop="center" as im %}
+                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"
+                         alt="{{ post.author }}'s profile picture">
+                {% endthumbnail %}
+            {% else %}
+                {# TODO: standard user pfp #}
+            {% endif %}
+        </div>
+        <h4 class="username"><a href="{% url 'users:user_detail' user_id=post.author.id %}">{{ post.author.username }}</a></h4><br>
         <p class="text-muted">Опубликованно {{ post.datetime_created }}</p>
     </div>
+    
+    <div class="location">
+        <img class="point" src="{% static 'img/other/point.png' %}">
+        <div class="location-place">{{post.location}}</div>
+    </div><br>
 
     <div class="post-main">
         <span value="{{ post.id }}" hidden></span>
         <p class="">{{ post.text }}</p>
-        {# TODO: add map #}
     </div>
 
     <div class="post-footer">
         <div class="likes" id="likes">
-            <span class="like_count" id="like_count">{{ post.publicationlike_set.count }}</span>
-            <span {% if user.is_authenticated %}id="like_button" class="like_button"{% endif %}>
-                <img
-                        data-src-other="{% if user.id not in post.publicationlike_set.users_liked_list %}{% static 'img/other/liked.png' %}{% else %}{% static 'img/other/unliked.png' %}{% endif %}"
-                        data-is-liked="{% if user.id in post.publicationlike_set.users_liked_list %}1{% else %}0{% endif %}"
-                        data-id="{{ post.id }}"
-                        src="{% if user.id in post.publicationlike_set.users_liked_list %}{% static 'img/other/liked.png' %}{% else %}{% static 'img/other/unliked.png' %}{% endif %}"
-                        width="25" alt="post unliked"
-                >
-            </span>
+            <img class="like-button"
+                    data-src-other="{% if user.id not in post.publicationlike_set.users_liked_list %}{% static 'img/other/liked.png' %}{% else %}{% static 'img/other/unliked.png' %}{% endif %}"
+                    data-is-liked="{% if user.id in post.publicationlike_set.users_liked_list %}1{% else %}0{% endif %}"
+                    data-id="{{ post.id }}"
+                    src="{% if user.id in post.publicationlike_set.users_liked_list %}{% static 'img/other/liked.png' %}{% else %}{% static 'img/other/unliked.png' %}{% endif %}"
+                    width="25" alt="like/unlike button">
+            <div><span class="like-count" id="like_count">{{ post.publicationlike_set.count }}</span></div>
         </div>
         <div class="comments">
             {% for comment in post.comment_set.all %}
                 <div class="comment">
-                    <p>коммент от {{ comment.author }}</p>
-                    <p>Текст: {{ comment.text }}</p>
+                    <p style="font-style: italic">Комментарий от <a href="{% url 'users:user_detail' user_id=comment.author.id %}">{{ comment.author.username }}</a></p>
+                    <p class="comment-text">{{ comment.text }}</p>
                 </div>
                 {% empty %}
                 <p class="text-muted">оп, еще никто не оставлял комментарии здесь..</p>
@@ -43,5 +50,3 @@
     </div>
 
 </div>
-<hr>
-

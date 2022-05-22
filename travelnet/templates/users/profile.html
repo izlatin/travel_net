@@ -1,13 +1,59 @@
 {% extends "base.html" %}
-{% block title %}
-  Мой профиль
-{% endblock %}
 {% block content %}
-<!--  <h1>Мой профиль</h1>-->
-<!--  <form action="" method="post">-->
-<!--    {% csrf_token %}-->
-<!--    {{ data_form.as_p }}-->
-<!--    {{ profile_form.as_p }}-->
-<!--    <button type="submit">Сохранить</button>-->
-<!--  </form>-->
+    <div class="row">
+        <div class="col-4">
+            <h1>Мой профиль</h1>
+            <form class="row" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col-12">
+                    {{ data_form.email.errors }}
+                    {{ data_form.email.label_tag }}
+                    {{ data_form.email }}
+                </div>
+                <div class="w-100"></div>
+                <div class="col-6">
+                    {{ data_form.first_name.errors }}
+                    {{ data_form.first_name.label_tag }}
+                    {{ data_form.first_name }}
+                </div>
+                <div class="col-6">
+                    {{ data_form.last_name.errors }}
+                    {{ data_form.last_name.label_tag }}
+                    {{ data_form.last_name }}
+                </div>
+                <div class="w-100 pb-2"></div>
+                <div class="w-auto row">
+                    {{ profile_form.birthday.errors }}
+                    {{ profile_form.birthday.label_tag }}
+                    {{ profile_form.birthday }}
+                </div>
+
+                <div class="w-100 pb-2"></div>
+
+                {% if user.image %}
+                    <div class="col-9 pb-3">
+                        <p class="mb-0 pb-1">Ваш аватар</p>
+                        <img class="" src="/media/{{ user.get_image_200x200 }}" alt="user's profile picture">
+                        <div class="">
+                            {{ data_form.remove_photo.errors }}
+                            {{ data_form.remove_photo.label_tag }}
+                            {{ data_form.remove_photo }}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12 pb-3">
+                        <p>Нет изображения</p>
+                        {{ data_form.image.errors }}
+                        {{ data_form.image.label_tag }}
+                        {{ data_form.image }}
+                    </div>
+                {% endif %}
+                <div class="w-100"></div>
+                <div class="col-12">
+                        <button type="submit" class="float-start col-4 btn btn-primary">Сохранить</button>
+                        <a class="btn-danger btn ms-1 col-4 float-end" href="{% url 'users:logout' %}">Выйти</a>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

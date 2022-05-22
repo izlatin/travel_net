@@ -34,13 +34,11 @@ function onLikeButtonClick(obj) {
     fetch('/api/v1/likes', opts).then((resp) => {
         if (resp.status === 200) {
             let old_src = obj.target.attributes.getNamedItem('src').value;
+            console.log(obj.target.parentElement.children[1].children[0].innerHTML)
+            obj.target.parentElement.children[1].children[0].innerHTML = parseInt(obj.target.parentElement.children[1].children[0].innerHTML) + (is_liked ? -1 : 1);
             obj.target.src = obj.target.attributes.getNamedItem('data-src-other').value;
             obj.target.setAttribute("data-src-other", old_src);
-            obj.target.parentElement.parentElement.childNodes[1].innerHTML = parseInt(obj.target.parentElement.parentElement.childNodes[1].innerHTML) + (is_liked ? -1 : 1);
-            console.log(parseInt(obj.target.parentElement.parentElement.childNodes[1].innerHTML) * (is_liked ? -1 : 1))
             obj.target.setAttribute("data-is-liked", is_liked ? 0 : 1);
-            console.log(resp)
-            console.log('like/unlike success')
         } else {
             console.log('unsuccess!')
         }
@@ -48,8 +46,12 @@ function onLikeButtonClick(obj) {
     })
 }
 
-let buttons = document.getElementsByClassName('like_button');
+let buttons = document.getElementsByClassName('like-button');
 for (let btn_index in buttons) {
     let btn = buttons[btn_index];
-    btn.addEventListener('click', onLikeButtonClick)
+    try {
+        btn.addEventListener('click', onLikeButtonClick)
+    } catch (e) {
+
+    }
 }

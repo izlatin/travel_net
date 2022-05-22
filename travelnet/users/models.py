@@ -43,9 +43,9 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
-    username = models.CharField(_('username'), unique=True, max_length=255)
+    username = models.CharField(_('username'), unique=True, max_length=30)
     email = models.EmailField(_('email address'), unique=True)
-    image = models.ImageField(_('аватар'), upload_to='uploads/', null=True)
+    image = models.ImageField(_('аватар'), upload_to='uploads/', null=True, blank=True)
 
     follows = models.ManyToManyField('self', verbose_name=_('Подписки'), symmetrical=False)
 
@@ -53,6 +53,9 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['email']
 
     objects = CustomUserManager()
+
+    def get_image_200x200(self):
+        return get_thumbnail(self.image, '200x200', crop='center', quality=51)
 
     def get_image_300x300(self):
         return get_thumbnail(self.image, '300x300', crop='center', quality=51)
@@ -63,6 +66,7 @@ class CustomUser(AbstractUser):
                 f'<img src="{self.image.url}" width="50">'
             )
         return 'Нет изображения'
+
     image_tmb.short_description = 'превью'
     image_tmb.allow_tags = True
 
