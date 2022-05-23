@@ -5,20 +5,29 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="username">{{user.username}}</h1>
-    <div class="avatar"><img src="/media/{{user.get_image_200x200}}"></div>
-    <div class="user-info">
+    <h1 class="username">{{ user.username }}</h1>
+    {% if user.image %}
+        <div class="avatar"><img src="/media/{{ user.get_image_200x200 }}"></div>
+        <div class="user-info">
+    {% else %}
+        <div class="user-info">
+            <h3 class="user-info">Аватар отсутствует</h3>
+    {% endif %}
         <h3 class="user-info">Имя: {{ user.first_name|default:"Не указано" }}</h3>
         <h3 class="user-info">Фамилия: {{ user.last_name|default:"Не указано" }}</h3>
-        <h4 class="user-info">День рождения: {{ user.profile.birthday|default:"Не указано" }}</h4>
-        {% if current_user.id == user.id %}
-            <h3><a href="{% url 'users:profile' %}">Редактировать профиль</a></h3>
-        {% endif %}
+        <h3 class="user-info">День рождения: {{ user.profile.birthday|default:"Не указано" }}</h3>
+    {% if current_user.id == user.id %}
+        <h3><a href="{% url 'users:profile' %}">Редактировать профиль</a></h3>
+    {% endif %}
     </div>
     {% if current_user.id == user.id %}
-<!--        <h2><a href="{% url 'publications:create_publication' %}">Написать пост</a></h2>-->
-        <h2>Мои публикации</h2>
+        <h2>Мои публикации <a href="{% url 'publications:create_publication' %}" class="text-success fw-semibold">Создать</a></h2>
     {% else %}
-        <h2>Мои записи</h2>
+        <h2>Публикации пользователя {{ user.username }}</h2>
     {% endif %}
+    {% for post in user.publication_set.all %}
+        {% include 'includes/publication.html' %}
+    {% empty %}
+        <h2 class="text-secondary">Вау, тут пусто..</h2>
+    {% endfor %}
 {% endblock %}

@@ -16,4 +16,4 @@ class CommentManager(models.Manager):
 
 class PublicationLikeManager(models.Manager):
     def users_liked_list(self):
-        return [i['author'] for i in self.values('author')]
+        return self.values_list('author_id', flat=True)
