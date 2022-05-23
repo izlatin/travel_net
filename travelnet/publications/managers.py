@@ -18,7 +18,7 @@ class PublicationManager(models.Manager):
         return self.get_queryset().select_and_prefetch() \
                    .filter(visible=True, datetime_created__gt=datetime_created_after) \
                    .annotate(publicationlike_count=Count('publicationlike')) \
-                   .order_by('publicationlike_count', '-datetime_created')[:post_count]
+                   .order_by('-publicationlike_count', '-datetime_created')[:post_count]
 
     def user_feed(self, user, post_count):
         return self.get_queryset().filter(visible=True, author__in=user.follows.all()) \

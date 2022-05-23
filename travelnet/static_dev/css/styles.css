@@ -196,6 +196,10 @@ div.publication-avatar {
     cursor: not-allowed;
 }
 
+.comment-like-button:hover {
+    cursor: pointer;
+}
+
 .point {
     float: left;
 }

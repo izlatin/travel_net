@@ -1,7 +1,8 @@
 from django.db import models
+from django.db.models import Count, F, Q
 
 from publications.models import Publication, AuthorMixin, DatetimeCreatedMixin, VisibleMixin
-from rating.managers import CommentManager
+from rating.managers import CommentManager, CommentLikeManager
 from rating.managers import PublicationLikeManager
 
 
@@ -34,6 +35,11 @@ class PublicationLike(AuthorMixin, DatetimeCreatedMixin):
 class CommentLike(AuthorMixin, DatetimeCreatedMixin):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 
+    objects = CommentLikeManager()
+
     class Meta:
         verbose_name = 'Лайк на комментарии'
         verbose_name_plural = 'Лайки на комментариях'
+        constraints = [
+            models.UniqueConstraint(fields=['comment', 'author'], name='unique_like_per_user_per_comment')
+        ]

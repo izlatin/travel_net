@@ -27,14 +27,45 @@ function onLikePublicationButtonClick(obj) {
             'mode': 'same-origin'
         },
         body: JSON.stringify({
-            publication_id: publication_id,
+            publication: publication_id,
         })
     };
 
     fetch('/api/v1/likes', opts).then((resp) => {
-        if (resp.status === 200) {
+        if (Math.floor(resp.status / 100) === 2) {
             let old_src = obj.target.attributes.getNamedItem('src').value;
             obj.target.parentElement.children[1].children[0].innerHTML = parseInt(obj.target.parentElement.children[1].children[0].innerHTML) + (is_liked ? -1 : 1);
+            obj.target.src = obj.target.attributes.getNamedItem('data-src-other').value;
+            obj.target.setAttribute("data-src-other", old_src);
+            obj.target.setAttribute("data-is-liked", is_liked ? 0 : 1);
+        } else {
+            console.log('unsuccess!')
+        }
+    })
+}
+
+function onCommentLikeButtonClick(obj) {
+    let is_liked = obj.target.attributes.getNamedItem('data-is-liked').value;
+    let comment_id = obj.target.attributes.getNamedItem('data-id').value;
+    is_liked = is_liked === "0" ? 0 : 1;
+    let opts = {
+        method: is_liked ? 'delete' : 'post',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json;charset=utf-8',
+            'session_id': getCookie('session_id'),
+            'mode': 'same-origin'
+        },
+        body: JSON.stringify({
+            comment: comment_id
+        })
+    };
+
+    fetch('/api/v1/comment-likes', opts).then((resp) => {
+        if (Math.floor(resp.status / 100) === 2) {
+            let old_src = obj.target.attributes.getNamedItem('src').value;
+
+            obj.target.parentElement.children[0].innerHTML = parseInt(obj.target.parentElement.children[0].innerHTML) + (is_liked ? -1 : 1);
             obj.target.src = obj.target.attributes.getNamedItem('data-src-other').value;
             obj.target.setAttribute("data-src-other", old_src);
             obj.target.setAttribute("data-is-liked", is_liked ? 0 : 1);
@@ -62,14 +93,24 @@ function onCommentFormSubmit(obj) {
     };
     fetch('/api/v1/comments', opts).then((resp) => {
         if (resp.status === 201) {
-            let comment_html = '<div class="comment">\n' +
-                '                    <p style="font-style: italic">Комментарий от <a href="' + USER_PROFILE_URL + '">' + USER_USERNAME + '</a>\n' +
-                '                    </p>\n' +
-                '                    <p class="comment-text">' + text + '</p>\n' +
-                '                </div>'
-            if (obj.target.parentElement.children[0].children[0].id === 'no-comment-text')
-                obj.target.parentElement.children[0].children[0].remove()
-            obj.target.parentElement.children[0].insertAdjacentHTML('beforeend', comment_html)
+            resp.json().then(json => {
+                let comment_html = '<div class="comment">\n' +
+                    '                    <p style="font-style: italic">Комментарий от <a href="' + USER_PROFILE_URL + '">' + USER_USERNAME + '</a>\n' +
+                    '                    </p>\n' +
+                    '                    <p class="comment-text">' + text + '<span class="float-end"><span>0</span>\n' +
+                    '                        <img class="comment-like-button"\n' +
+                    '                             data-src-other="' + LIKED_PNG_URL + '"\n' +
+                    '                             data-is-liked="0"\n' +
+                    '                             data-id="' + json['comment_id'] + '"\n' +
+                    '                             src="' + UNLIKED_PNG_URL + '"\n' +
+                    '                             width="20" alt="like/unlike button">\n' +
+                    '                        </span></p>\n' +
+                    '                </div>'
+                if (obj.target.parentElement.children[0].children[0].id === 'no-comment-text')
+                    obj.target.parentElement.children[0].children[0].remove()
+                obj.target.parentElement.children[0].insertAdjacentHTML('beforeend', comment_html);
+                obj.target.parentElement.children[0].lastChild
+            })
         }
     })
     return false;
@@ -91,6 +132,14 @@ for (let btn_index in publicationLikeButtons) {
     try {
         btn.addEventListener('click', onLikePublicationButtonClick)
     } catch (e) {
+    }
+}
 
+let commentLikeButtons = document.getElementsByClassName('comment-like-button');
+for (let btn_index in commentLikeButtons) {
+    let btn = commentLikeButtons[btn_index];
+    try {
+        btn.addEventListener('click', onCommentLikeButtonClick)
+    } catch (e) {
     }
 }
