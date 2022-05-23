@@ -17,6 +17,8 @@ aside {
   min-height: 350px;
   background-image: linear-gradient(30deg , #0048bd, #44a7fd);
   border-top-right-radius: 80px;
+  z-index: 5001;
+  position: fixed;
 }
 
 aside a {
@@ -81,6 +83,41 @@ main{
     top: max(300px, 92vh);
     font-size: 14px;
 }
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.marker {
+    display: block;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+}
+
+.popup_mapbox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  word-wrap: break-word;
+
+}
+
+.popup_mapbox h5 {
+  margin-bottom: 15px;
+}
+
+
 
 /*
 .social {
