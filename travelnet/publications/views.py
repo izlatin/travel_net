@@ -1,6 +1,10 @@
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import ListView
 
 from publications.models import Publication
+
+from publications.forms import CreatePublicationForm
 
 
 class PublicationList(ListView):
@@ -25,3 +29,18 @@ class PublicationList(ListView):
         #  здесь обработка всего этого
         pass
 
+
+def create_publication(request):
+    if request.method == 'POST':
+        form = CreatePublicationForm(request.POST)
+        if form.is_valid():
+            post = Publication.objects.create(
+                text=form.cleaned_data['text'],
+                location=form.cleaned_data['location'],
+                author=request.user)
+            post.save()
+            return redirect(reverse('users:user_detail', kwargs={'user_id': request.user.id}))
+    else:
+        form = CreatePublicationForm()
+    context = {'form': form}
+    return render(request, 'publications/create_publication.html', context)

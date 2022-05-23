@@ -1,12 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.fields.files import FieldFile
 from django.utils.translation import ugettext_lazy as _
 
-from publications.managers import PublicationManager
-from publications.validators import validate_photo_or_video
-
+from .managers import PublicationManager
+from .validators import validate_photo_or_video
 
 
 # TODO: move these mixins to a separate file
@@ -50,6 +47,13 @@ class Location(models.Model):
 
     place_alias = models.CharField('Название места/заведения', max_length=150, null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.country}, {self.city}'
+
+    class Meta:
+        verbose_name = 'Место'
+        verbose_name_plural = 'Места'
+
 
 class Publication(AuthorMixin, DatetimeCreatedMixin, VisibleMixin):
     text = models.TextField('Текст')
@@ -60,6 +64,9 @@ class Publication(AuthorMixin, DatetimeCreatedMixin, VisibleMixin):
     class Meta:
         verbose_name = 'Публикация'
         verbose_name_plural = 'Публикации'
+
+    def __str__(self):
+        return f'{self.author} in {self.location}'
 
 
 class Attachment(DatetimeCreatedMixin, AuthorMixin):
