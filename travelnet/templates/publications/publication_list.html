@@ -5,7 +5,9 @@
 {% block scripts %}<script src="{% static 'js/likes.js' %}"></script>{% endblock %}
 
 {% block content %}
-    {% include "includes/create_publication.html" with form=new_publication_form %}
+    {% if user.is_authenticated %}
+        {% include "includes/create_publication.html" with form=new_publication_form %}
+    {% endif %}
     {% for post in publications %}
         {% include "includes/publication.html" %}
     {% empty %}

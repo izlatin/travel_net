@@ -67,6 +67,8 @@ function onCommentFormSubmit(obj) {
                 '                    </p>\n' +
                 '                    <p class="comment-text">' + text + '</p>\n' +
                 '                </div>'
+            if (obj.target.parentElement.children[0].children[0].id === 'no-comment-text')
+                obj.target.parentElement.children[0].children[0].remove()
             obj.target.parentElement.children[0].insertAdjacentHTML('beforeend', comment_html)
         }
     })

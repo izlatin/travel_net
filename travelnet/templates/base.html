@@ -20,11 +20,10 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script>
-        const USER_PROFILE_URL = "{% url 'users:user_detail' user_id=user.id %}";
-        const USER_USERNAME = "{{ user.username }}";
-    </script>
-    <script>
-        console.log(USER_USERNAME)
+        {% if user.is_authenticated %}
+            const USER_PROFILE_URL = "{% url 'users:user_detail' user_id=user.id %}";
+            const USER_USERNAME = "{{ user.username }}";
+        {% endif %}
     </script>
     {% block head %}{% endblock %}
 </head>
