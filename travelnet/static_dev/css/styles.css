@@ -249,3 +249,7 @@ div.publication-avatar {
 .add-publication {
     font-size: 1.2rem;
 }
+
+a {
+    color: inherit;
+}
