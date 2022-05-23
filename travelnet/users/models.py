@@ -94,5 +94,9 @@ class Profile(models.Model):
 @receiver(post_save, sender=CustomUser)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
+        # if instance.image.name is None:
+        #     instance.image = requests.get('https://thiscatdoesnotexist.com')
+        #     instance.save()
         Profile.objects.create(user=instance)
+
     instance.profile.save()
