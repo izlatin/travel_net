@@ -11,7 +11,7 @@ class PostsView(TemplateView):
         context = super(PostsView, self).get_context_data(**kwargs)
 
         token = 'pk.eyJ1IjoiYWxleC1idWwiLCJhIjoiY2tleGNpaTI1MDAwazJ5bzJucWgyMmh3aiJ9.N1pXrpkKMv4NfecZmZa3TA'
-        posts = Publication.objects.maps_posts()
+        posts = Publication.objects.popular_posts(100).select_related('location')
 
         prepared_posts = []
         for post in posts:
@@ -20,7 +20,6 @@ class PostsView(TemplateView):
             post['location'] = LocationSerializer(location).data
             prepared_posts.append(post)
 
-        print(prepared_posts)
         context['posts'] = prepared_posts
         context['token'] = token
 

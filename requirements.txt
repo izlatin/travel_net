@@ -1,4 +1,4 @@
-asgiref==3.5.1
+﻿asgiref==3.5.1
 Django==3.2.13
 django-cleanup==6.0.0
 django-debug-toolbar==3.4.0
