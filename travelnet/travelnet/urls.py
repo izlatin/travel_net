@@ -18,7 +18,9 @@ urlpatterns = [
     path('about/', include('about.urls')),
 
     # TODO: убрать это отсюда
-    path('api/v1/likes', views.PublicationLikeViews.as_view())
+    path('api/v1/likes', views.PublicationLikeViews.as_view()),
+    path('api/v1/comments', views.CommentViews.as_view()),
+    path('api/v1/comment-likes', views.CommentLikeViews.as_view()),
 ]
 
 if settings.DEBUG:

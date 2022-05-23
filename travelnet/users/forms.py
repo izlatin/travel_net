@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import sorl
 from django import forms
 from django.contrib.auth import get_user_model, forms as auth_forms
 from django.contrib.auth.forms import UserCreationForm

@@ -28,13 +28,6 @@ class AuthorMixin(models.Model):
         abstract = True
 
 
-class AuthorMixin(models.Model):
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-
-    class Meta:
-        abstract = True
-
-
 class Location(models.Model):
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
@@ -76,6 +69,8 @@ class Attachment(DatetimeCreatedMixin, AuthorMixin):
 
     file = models.FileField('Приложение', upload_to='attachments/', validators=[validate_photo_or_video])
     file_type = models.CharField('Тип файла', choices=AttachmentType.choices, max_length=10)
+
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE, verbose_name='Публикация')
 
     class Meta:
         verbose_name = 'Вложение'

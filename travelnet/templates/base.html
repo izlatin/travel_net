@@ -16,8 +16,17 @@
     <meta name="theme-color" content="#ffffff">
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script>
+        {% if user.is_authenticated %}
+            const USER_PROFILE_URL = "{% url 'users:user_detail' user_id=user.id %}";
+            const USER_USERNAME = "{{ user.username }}";
+            const UNLIKED_PNG_URL = "{% static 'img/other/unliked.png' %}";
+            const LIKED_PNG_URL = "{% static 'img/other/liked.png' %}";
+        {% endif %}
+    </script>
     {% block head %}{% endblock %}
 </head>
 <body>
@@ -27,4 +36,5 @@
 </main>
 </body>
 {% block scripts %}{% endblock %}
+
 </html>
