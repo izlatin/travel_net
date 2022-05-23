@@ -1,15 +1,11 @@
 from rest_framework import serializers
 
-from publications.models import Publication, Location
+from publications.models import Publication
 
 
 class PublicationSerializer(serializers.ModelSerializer):
+    location = serializers.ListField()
+
     class Meta:
         model = Publication
-        fields = "__all__"
-
-
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
         fields = "__all__"

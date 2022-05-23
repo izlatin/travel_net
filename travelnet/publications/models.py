@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .managers import PublicationManager
 from .validators import validate_photo_or_video
+from mapbox_location_field.models import LocationField
 
 
 # TODO: move these mixins to a separate file
@@ -28,29 +29,13 @@ class AuthorMixin(models.Model):
         abstract = True
 
 
-class Location(models.Model):
-    longitude = models.DecimalField(max_digits=10, decimal_places=7)
-    latitude = models.DecimalField(max_digits=10, decimal_places=7)
-
-    # TODO: в приложении map добавить модели country и city, здесь поставить ForeignKey
-    country = models.CharField(max_length=50, null=True)
-    city = models.CharField(max_length=50, null=True)
-    street = models.CharField(max_length=50, null=True)
-    building = models.CharField(max_length=10, null=True)
-
-    place_alias = models.CharField('Название места/заведения', max_length=150, null=True, blank=True)
-
-    def __str__(self):
-        return f'{self.country}, {self.city}'
-
-    class Meta:
-        verbose_name = 'Место'
-        verbose_name_plural = 'Места'
-
-
 class Publication(AuthorMixin, DatetimeCreatedMixin, VisibleMixin):
     text = models.TextField('Текст')
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, verbose_name='Локация')
+    location = LocationField("Расположение", map_attrs={"placeholder": "Выберите геопозицию на карте", "zoom": 7,
+                                                        "language": "ru",
+                                                        "center": [56.078743315545864, 40.53618966182697],
+                                                        # "style": "mapbox://styles/alex-bul/cl3j3cjcs007q14mffha4imot"
+                                                        })
 
     objects = PublicationManager()
 

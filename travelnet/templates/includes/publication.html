@@ -20,7 +20,7 @@
 
     <div class="location">
         <img class="point" src="{% static 'img/other/point.png' %}">
-        <div class="location-place">{{ post.location }}</div>
+        <a target="_blank" href="https://maps.yandex.ru/?text={{ post.location.0 }}+{{ post.location.1 }}">Открыть на Яндекс.Карты</a>
     </div>
     <br>
 

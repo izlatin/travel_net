@@ -3,6 +3,14 @@
 
 <body>
     <style type="text/css">
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+
     #info {
         display: table;
         position: relative;
@@ -51,7 +59,9 @@
         const el = document.createElement('div');
         el.className = 'marker';
 
-        let icon_size = get_icon_size();
+        // let icon_size = get_icon_size();
+        let icon_size = 70;
+
 
         el.style.backgroundImage = `url(https://placekitten.com/g/${icon_size}/${icon_size}/)`;
         icon_size += 'px';
@@ -70,10 +80,10 @@
                                         <button type="button" class="btn btn-light" href="#">Перейти</button>
                                     </div>
                                 `);
-        // console.log(post)
+        console.log(post)
         // Add markers to the map.
         let marker = new mapboxgl.Marker(el)
-            .setLngLat([post.location.longitude, post.location.latitude])
+            .setLngLat(post.location)
             .setPopup(popup)
             .addTo(map);
         currentMarkers.push(marker);
@@ -82,11 +92,12 @@
     mapboxgl.accessToken = '{{token}}';
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
+        style: 'mapbox://styles/alex-bul/cl3j3cjcs007q14mffha4imot',
         zoom: 3,
         minZoom: 3,
         maxZoom: 14,
-        center: [68, -49]
+        language: 'ru',
+        center: [38, 53]
     });
 
     map.addControl(new mapboxgl.NavigationControl());
@@ -96,7 +107,6 @@
     const posts = JSON.parse(document.getElementById('hello-data').textContent);
     map.dragRotate.disable();
     map.touchZoomRotate.disableRotation();
-
 
     // Сейчас реализовано тестовое наполнение данными
     // TODO: запрос постов в определенных координатах, их отображение 

@@ -84,14 +84,6 @@ main{
     font-size: 14px;
 }
 
-#map {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-}
-
 body {
     margin: 0;
     padding: 0;
@@ -240,6 +232,7 @@ div.publication-avatar {
 .point {
     float: left;
 }
+
 
 .location-place {
     font-style: italic;
