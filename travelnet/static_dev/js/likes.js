@@ -108,8 +108,9 @@ function onCommentFormSubmit(obj) {
                     '                </div>'
                 if (obj.target.parentElement.children[0].children[0].id === 'no-comment-text')
                     obj.target.parentElement.children[0].children[0].remove()
+
                 obj.target.parentElement.children[0].insertAdjacentHTML('beforeend', comment_html);
-                obj.target.parentElement.children[0].lastChild
+                obj.target.parentElement.children[0].lastChild.children[1].children[0].children[1].addEventListener('click', onCommentLikeButtonClick)
             })
         }
     })
