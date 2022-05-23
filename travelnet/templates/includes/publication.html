@@ -48,17 +48,27 @@
             {% endif %}
             <div><span class="like-count" id="like_count">{{ post.publicationlike_set.count }}</span></div>
         </div>
-        <div class="comments">
+        <div class="comments mb-2">
             {% for comment in post.comment_set.all %}
                 <div class="comment">
                     <p style="font-style: italic">Комментарий от <a
                             href="{% url 'users:user_detail' user_id=comment.author.id %}">{{ comment.author.username }}</a>
+                        {% if comment.responding_to %}
+                            в ответ
+                            <a href="{% url 'users:user_detail' user_id=comment.responding_to.author.id %}">{{ comment.responding_to.author.username }}</a>
+                            "{{ comment.responding_to.text|truncatechars:10 }}"
+                        {% endif %}
                     </p>
                     <p class="comment-text">{{ comment.text }}</p>
                 </div>
                 {% empty %}
                 <p class="text-muted">оп, еще никто не оставлял комментарии здесь..</p>
             {% endfor %}
+            <form class="row px-3 justify-content-between me-1">
+                <label style="font-style: italic" class="mb-2" for="comment-input">Ваш комментарий!</label>
+                <input id="comment-input" type="text" class="form-control me-4 w-auto flex-grow-1 float-start" placeholder="вау вот это пост!!">
+                <input type="submit" class="btn btn-secondary w-auto float-end" value="Отправить!">
+            </form>
         </div>
     </div>
 
