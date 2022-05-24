@@ -281,6 +281,11 @@ div.publication-avatar {
   padding: 1em;
 }
 
+.top-nav h2 {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
 .top-nav a {
     text-decoration: none;
 }
