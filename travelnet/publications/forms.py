@@ -9,6 +9,8 @@ class CreatePublicationForm(forms.ModelForm):
         'placeholder': 'Сегодня я побывал в пабе на старом арбате..'
     }))
 
+    author = forms.HiddenInput()
+
     class Meta:
         model = Publication
         fields = ('location', 'text')

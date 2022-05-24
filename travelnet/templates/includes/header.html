@@ -12,6 +12,10 @@
     <i class="fa fa-star-o" aria-hidden="true"></i>
     Профиль
   </a>
+  <a href="{% url 'users:logout' %}">
+    <i class="fa fa-star-o" aria-hidden="true"></i>
+    Выйти
+  </a>
 {% else %}
   <a href="{% url 'users:login' %}">
     <i class="fa fa-star-o" aria-hidden="true"></i>
