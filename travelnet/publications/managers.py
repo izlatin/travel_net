@@ -16,7 +16,7 @@ class PublicationManager(models.Manager):
     def get_queryset(self):
         return PublicationQueryset(model=self.model, using=self._db)
 
-    def popular_posts(self, post_count, datetime_created_after):
+    def popular_posts(self, post_count, datetime_created_after=(datetime.datetime.now() - datetime.timedelta(days=14))):
         return self.get_queryset().select_and_prefetch() \
                    .filter(visible=True, datetime_created__gt=datetime_created_after) \
                    .annotate(publicationlike_count=Count('publicationlike')) \

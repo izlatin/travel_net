@@ -30,17 +30,18 @@
     </div>
 
     <div class="post-footer row px-3">
-        <div class="col-10 likes" id="likes">
-            <img title="вы не можете лайкнуть пост, которого еще нет!" class="like-button-disabled"
-                 src="{% static 'img/other/unliked.png' %}" width="25" alt="like/unlike button">
-            <div><span class="like-count" id="like_count"
-                       title="Кто знает, сколько лайков наберет этот пост..">???</span></div>
+<!--        <div class="col-10 likes" id="likes">-->
+<!--            <img title="вы не можете лайкнуть пост, которого еще нет!" class="like-button-disabled"-->
+<!--                 src="{% static 'img/other/unliked.png' %}" width="25" alt="like/unlike button">-->
+<!--            <div><span class="like-count" id="like_count"-->
+<!--                       title="Кто знает, сколько лайков наберет этот пост..">???</span></div>-->
+<!--        </div>-->
+        <div class="d-flex justify-content-center mb-1">
+        <input type="submit" value="Опубликовать!" class=" col-7 btn btn-success publish-button">
         </div>
-        <input type="submit" value="Опубликовать!" class=" col-3 btn btn-success publish-button">
-
-        <div class="comments">
-            <p class="text-muted">наверняка кто-нибудь оставит комментарий как только ты опубликуешь это!..</p>
-        </div>
+<!--        <div class="comments">-->
+<!--            <p class="text-muted">наверняка кто-нибудь оставит комментарий как только ты опубликуешь это!..</p>-->
+<!--        </div>-->
     </div>
     {{form.media}}
 </form>

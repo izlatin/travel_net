@@ -34,7 +34,7 @@ class Publication(AuthorMixin, DatetimeCreatedMixin, VisibleMixin):
     location = LocationField("Расположение", map_attrs={"placeholder": "Выберите геопозицию на карте", "zoom": 7,
                                                         "language": "ru",
                                                         "center": [56.078743315545864, 40.53618966182697],
-                                                        # "style": "mapbox://styles/alex-bul/cl3j3cjcs007q14mffha4imot"
+                                                         # "style": "mapbox://styles/alex-bul/cl3j3cjcs007q14mffha4imot"
                                                         })
 
     objects = PublicationManager()
