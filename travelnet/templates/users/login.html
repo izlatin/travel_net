@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Вход</h1>
-        <div class="row text-left">
+    <p><span class="h1">Вход</span> <span class="h4 text-secondary fw-normal">Впервые здесь? <a
+            href="{% url 'users:signup' %}">Регистрация</a></span></p>
+    <div class="row text-left">
         {% if form.errors %}
             {% for field in form %}
                 {% for error in field.errors %}
@@ -13,7 +14,7 @@
             {% endfor %}
         {% endif %}
 
-        <form method="post" action="">
+        <form method="post" class="pe-4" action="">
             {% csrf_token %}
 
             {% for field in form %}
@@ -33,17 +34,8 @@
 
             {% endfor %}
 
-            <div class="row">
-                <div class="col-12 justify-content-evenly">
-                    <button type="submit" class="btn btn-outline-primary">Войти</button>
-                </div>
-                <div class="col-9"></div>
-                <div class="col-3">
-                    <a class="" href="{% url 'users:password_reset' %}">Забыли пароль?</a>
-
-                </div>
-            </div>
+            <button type="submit" class="btn btn-outline-primary">Войти</button>
+            <a class="float-end" href="{% url 'users:password_reset' %}">Забыли пароль?</a>
         </form>
-        <h2><a href="{% url 'users:signup' %}">Регистрация</a></h2>
     </div>
 {% endblock %}

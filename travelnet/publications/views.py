@@ -1,8 +1,7 @@
 import datetime
 
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.views import View
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
 from publications.forms import CreatePublicationForm
@@ -23,9 +22,6 @@ class PublicationList(ListView):
         if not self.request.user.is_authenticated or self.request.user.follows.count() == 0:
             return Publication.objects.popular_posts(post_count,
                                                      datetime_created_after=datetime_most_popular_created_before)
-        return Publication.objects.popular_posts(post_count,
-                                                 datetime_created_after=datetime_most_popular_created_before)
-
         return Publication.objects.user_feed(self.request.user, post_count)
 
     def get_context_data(self, *args, **kwargs):
@@ -46,16 +42,14 @@ class CreatePublicationView(CreateView):
     model = Publication
     template_name = 'publications/create_publication.html'
     form_class = CreatePublicationForm
+    success_url = reverse_lazy('publications:publication_list')
 
-    # def post(self, request):
-    #     form = CreatePublicationForm(request.POST)
-    #     if form.is_valid():
-    #         post = Publication.objects.create(
-    #             text=form.cleaned_data['text'],
-    #             location=form.cleaned_data['location'],
-    #             author=request.user)
-    #         post.save()
-    #         return redirect(reverse('users:user_detail', kwargs={'user_id': request.user.id}))
+    def form_valid(self, form):
+        publication = form.save(commit=False)
+        publication.author = self.request.user
+        publication.save()
+
+        return super().form_valid(form)
 
 
 def create_publication(request):

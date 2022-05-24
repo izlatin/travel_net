@@ -1,7 +1,7 @@
 import datetime
 
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Q
 
 
 class PublicationQueryset(models.QuerySet):
@@ -23,8 +23,7 @@ class PublicationManager(models.Manager):
                    .order_by('-publicationlike_count', '-datetime_created')[:post_count]
 
     def user_feed(self, user, post_count):
-        return self.filter(visible=True).prefetch_related('publicationlike_set').prefetch_related(
-            'publication_set').filter(author__in=user.follows.all()).order_by('-datetime_created')[:post_count]
+        return self.get_queryset().select_and_prefetch().filter(visible=True).filter(Q(author__in=user.follows.all()) | Q(author=user)).order_by('-datetime_created')[:post_count]
 
     def maps_posts(self):
         return self.select_related('location').filter(visible=True)
