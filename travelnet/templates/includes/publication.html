@@ -19,8 +19,10 @@
     </div>
 
     <div class="location">
-        <img class="point" src="{% static 'img/other/point.png' %}">
-        <a target="_blank" href="https://maps.yandex.ru/?text={{ post.location.0 }}+{{ post.location.1 }}">Открыть на Яндекс.Карты</a>
+        {#        <img class="point" src="{% static 'img/other/point.png' %}">#}
+        <a target="_blank" href="https://maps.yandex.ru/?text={{ post.location.1 }}+{{ post.location.0 }}">Открыть на
+            Яндекс.Карты</a>
+        <a href="{% url 'publications:detail_publication' pk=post.id %}" class="float-end">Посмотреть вложения ({{ post.attachment_set.count }})</a>
     </div>
     <br>
 
@@ -59,28 +61,28 @@
                                 <a href="{% url 'users:user_detail' user_id=comment.responding_to.author.id %}">{{ comment.responding_to.author.username }}</a>
                                 "{{ comment.responding_to.text|truncatechars:10 }}"
                             {% endif %}
-                        {# TODO: post deletion #}
-{#                        <span class="float-end me-3">DEL</span>#}
+                            {# TODO: post deletion #}
+                            {#                        <span class="float-end me-3">DEL</span>#}
                         </p>
 
                         <p class="comment-text">
                             <span>{{ comment.text }}</span>
                             <span class="float-end"><span>{{ comment.commentlike_set.count }}</span>
-                            {% if user.id in comment.commentlike_set.users_liked_list %}
-                                <img class="comment-like-button"
-                                     data-src-other="{% static 'img/other/unliked.png' %}"
-                                     data-is-liked="1"
-                                     data-id="{{ comment.id }}"
-                                     src="{% static 'img/other/liked.png' %}"
-                                     width="20" alt="like/unlike button">
-                            {% else %}
-                                <img class="comment-like-button"
-                                     data-src-other="{% static 'img/other/liked.png' %}"
-                                     data-is-liked="0"
-                                     data-id="{{ comment.id }}"
-                                     src="{% static 'img/other/unliked.png' %}"
-                                     width="20" alt="like/unlike button">
-                            {% endif %}
+                                {% if user.id in comment.commentlike_set.users_liked_list %}
+                                    <img class="comment-like-button"
+                                         data-src-other="{% static 'img/other/unliked.png' %}"
+                                         data-is-liked="1"
+                                         data-id="{{ comment.id }}"
+                                         src="{% static 'img/other/liked.png' %}"
+                                         width="20" alt="like/unlike button">
+                                {% else %}
+                                    <img class="comment-like-button"
+                                         data-src-other="{% static 'img/other/liked.png' %}"
+                                         data-is-liked="0"
+                                         data-id="{{ comment.id }}"
+                                         src="{% static 'img/other/unliked.png' %}"
+                                         width="20" alt="like/unlike button">
+                                {% endif %}
                             </span>
                         </p>
                     </div>

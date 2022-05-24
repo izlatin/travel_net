@@ -1,7 +1,7 @@
 import datetime
 
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Q
 
 
 class PublicationQueryset(models.QuerySet):
@@ -20,7 +20,7 @@ class PublicationManager(models.Manager):
         return self.get_queryset().select_and_prefetch() \
                    .filter(visible=True, datetime_created__gt=datetime_created_after) \
                    .annotate(publicationlike_count=Count('publicationlike')) \
-                   .order_by('-publicationlike_count', '-datetime_created')[:post_count]
+                   .order_by('-publicationlike', '-datetime_created')
 
     def user_feed(self, user, post_count):
-        return self.get_queryset().select_and_prefetch().filter(visible=True).filter(Q(author__in=user.follows.all()) | Q(author=user)).order_by('-datetime_created')[:post_count]
+        return self.get_queryset().select_and_prefetch().filter(visible=True).filter(Q(author__in=user.follows.all()) | Q(author=user)).order_by('-datetime_created')

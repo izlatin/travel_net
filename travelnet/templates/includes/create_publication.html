@@ -1,7 +1,7 @@
 {% load thumbnail %}
 {% load static %}
 
-<form action="{% url 'publications:create_publication' %}" method="post" class="container-lg publication">
+<form enctype="multipart/form-data" action="{% url 'publications:create_publication' %}" method="post" class="container-lg publication">
     {% csrf_token %}
     <div class="post-header">
         <div class="publication-avatar">
@@ -17,7 +17,6 @@
     </div>
 
     <div class="location">
-        <img class="point" src="{% static 'img/other/point.png' %}">
         {{ form.location.errors }}
         {{ form.location.label_tag }}
         {{ form.location }}
@@ -28,20 +27,18 @@
         {{ form.text.label_tag }}
         {{ form.text }}
     </div>
+    <br>
+    <div class="row px-4 pb-3">
+        {{ form.file.errors }}
+        {{ form.file.label_tag }}
+        {{ form.file }}
+    </div>
 
     <div class="post-footer row px-3">
-<!--        <div class="col-10 likes" id="likes">-->
-<!--            <img title="вы не можете лайкнуть пост, которого еще нет!" class="like-button-disabled"-->
-<!--                 src="{% static 'img/other/unliked.png' %}" width="25" alt="like/unlike button">-->
-<!--            <div><span class="like-count" id="like_count"-->
-<!--                       title="Кто знает, сколько лайков наберет этот пост..">???</span></div>-->
-<!--        </div>-->
         <div class="d-flex justify-content-center mb-1">
-        <input type="submit" value="Опубликовать!" class=" col-7 btn btn-success publish-button">
+            <input type="submit" value="Опубликовать!" class=" col-7 btn btn-success publish-button">
         </div>
-<!--        <div class="comments">-->
-<!--            <p class="text-muted">наверняка кто-нибудь оставит комментарий как только ты опубликуешь это!..</p>-->
-<!--        </div>-->
     </div>
-    {{form.media}}
+
+    {{ form.media }}
 </form>

@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from mapbox_location_field.models import LocationField
 
 from .managers import PublicationManager
 from .validators import validate_photo_or_video
-from mapbox_location_field.models import LocationField
 
 
 # TODO: move these mixins to a separate file
@@ -31,11 +31,11 @@ class AuthorMixin(models.Model):
 
 class Publication(AuthorMixin, DatetimeCreatedMixin, VisibleMixin):
     text = models.TextField('Текст')
-    location = LocationField("Расположение", map_attrs={"placeholder": "Выберите геопозицию на карте", "zoom": 7,
-                                                        "language": "ru",
-                                                        "center": [56.078743315545864, 40.53618966182697],
-                                                         # "style": "mapbox://styles/alex-bul/cl3j3cjcs007q14mffha4imot"
-                                                        })
+    location = LocationField("Расположение", map_attrs={
+        "placeholder": "Выберите геопозицию на карте", "zoom": 7,
+        "language": "ru",
+        "center": [37.60024739728942, 55.763870740960954]
+    })
 
     objects = PublicationManager()
 

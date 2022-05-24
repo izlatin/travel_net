@@ -1,11 +1,10 @@
 import datetime
 
-from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
 from publications.forms import CreatePublicationForm
-from publications.models import Publication
+from publications.models import Publication, Attachment
 
 
 class PublicationList(ListView):
@@ -19,10 +18,12 @@ class PublicationList(ListView):
 
         # если чел разлогинен или у него 0 подписок, кидаем популярные посты
         # иначе кидаем посты из подписок
-        if not self.request.user.is_authenticated or self.request.user.follows.count() == 0:
-            return Publication.objects.popular_posts(post_count,
-                                                     datetime_created_after=datetime_most_popular_created_before)
-        return Publication.objects.user_feed(self.request.user, post_count)
+        # if not self.request.user.is_authenticated or self.request.user.follows.count() == 0:
+        #     return
+        q1 = Publication.objects.user_feed(self.request.user, post_count)
+        q2 = Publication.objects.popular_posts(post_count, datetime_created_after=datetime_most_popular_created_before)
+        res = (q1 & q2).distinct()
+        return res
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -44,25 +45,31 @@ class CreatePublicationView(CreateView):
     form_class = CreatePublicationForm
     success_url = reverse_lazy('publications:publication_list')
 
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
     def form_valid(self, form):
         publication = form.save(commit=False)
         publication.author = self.request.user
         publication.save()
 
+        files = self.request.FILES.getlist('file')
+        if form.is_valid():
+            for f in files:
+                Attachment.objects.create(
+                    author=self.request.user, publication_id=publication.id, file_type='Photo', file=f
+                )
+
         return super().form_valid(form)
 
-
-def create_publication(request):
-    if request.method == 'POST':
-        form = CreatePublicationForm(request.POST)
-        if form.is_valid():
-            post = Publication.objects.create(
-                text=form.cleaned_data['text'],
-                location=form.cleaned_data['location'],
-                author=request.user)
-            post.save()
-            return redirect(reverse('users:user_detail', kwargs={'user_id': request.user.id}))
-    else:
-        form = CreatePublicationForm()
-    context = {'form': form}
-    return render(request, 'publications/create_publication.html', context)
+# class AttachmentListView(ListView):
+#     template_name = 'publications/attachments.html'
+#
+#     def get(self, request, publication_id, *args, **kwargs):
+#         self.queryset = Attachment.objects.filter(publication_id=publication_id)
+#         return super().get(request, *args, **kwargs)
