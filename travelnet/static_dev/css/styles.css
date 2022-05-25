@@ -403,3 +403,7 @@ div.publication-avatar {
         display: flex;
     }
 }
+
+.like-count {
+    font-size: 2rem;
+}
