@@ -1,10 +1,9 @@
 import datetime
-import time
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from publications.forms import CreatePublicationForm
 from publications.models import Publication, Attachment
 
@@ -59,6 +58,7 @@ class CreatePublicationView(CreateView):
     template_name = 'publications/create_publication.html'
     form_class = CreatePublicationForm
     success_url = reverse_lazy('publications:publication_list')
+    object = None
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
