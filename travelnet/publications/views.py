@@ -1,8 +1,10 @@
 import datetime
+import time
 
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from publications.forms import CreatePublicationForm
 from publications.models import Publication, Attachment
 
@@ -13,20 +15,33 @@ class PublicationList(ListView):
     context_object_name = 'publications'
 
     def get_queryset(self):
-        post_count = 5
         datetime_most_popular_created_before = datetime.datetime.now() - datetime.timedelta(days=14)
 
         # если чел разлогинен или у него 0 подписок, кидаем популярные посты
         # иначе кидаем посты из подписок
-        # if not self.request.user.is_authenticated or self.request.user.follows.count() == 0:
-        #     return
-        q1 = Publication.objects.user_feed(self.request.user, post_count)
-        q2 = Publication.objects.popular_posts(post_count, datetime_created_after=datetime_most_popular_created_before)
+        q2 = Publication.objects.popular_posts(datetime_created_after=datetime_most_popular_created_before)
+
+        if not self.request.user.is_authenticated or self.request.user.follows.count() == 0:
+            return q2
+        q1 = Publication.objects.user_feed(self.request.user)
         res = (q1 & q2).distinct()
         return res
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+
+        object_list = context['object_list']
+        page = self.request.GET.get('page', 1)
+        paginator = Paginator(object_list, 5)
+        try:
+            numbers = paginator.page(page)
+        except PageNotAnInteger:
+            numbers = paginator.page(1)
+        except EmptyPage:
+            numbers = paginator.page(paginator.num_pages)
+
+        context['publications'] = numbers
+
         context['new_publication_form'] = CreatePublicationForm()
         return context
 
@@ -66,10 +81,3 @@ class CreatePublicationView(CreateView):
                 )
 
         return super().form_valid(form)
-
-# class AttachmentListView(ListView):
-#     template_name = 'publications/attachments.html'
-#
-#     def get(self, request, publication_id, *args, **kwargs):
-#         self.queryset = Attachment.objects.filter(publication_id=publication_id)
-#         return super().get(request, *args, **kwargs)

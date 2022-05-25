@@ -109,7 +109,13 @@ body {
   margin-bottom: 15px;
 }
 
+.likes{
+  margin-bottom: 30px;
+}
 
+.infinite-more-link{
+    display: none;
+}
 
 /*
 .social {

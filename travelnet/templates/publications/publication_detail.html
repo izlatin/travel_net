@@ -3,15 +3,4 @@
 {% block title %}Пост от {{ post.author.username }}{% endblock %}
 {% block content %}
     {% include "includes/publication.html" %}
-    <div class="attachments container mb-5 text-center">
-        <h1>Вложения</h1>
-        {% for attachment in post.attachment_set.all %}
-            {% if attachment.file_type == "Photo" %}
-                <img src="{{ attachment.file.url }}" class="rounded img-fluid text-muted" alt="">
-            {% else %}
-                <video src="{{ attachment.file.url }}" class="img-fluid"></video>
-            {% endif %}
-        {% endfor %}
-    </div>
-
 {% endblock %}

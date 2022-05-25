@@ -10,6 +10,8 @@ class PublicationLikeViews(generics.GenericAPIView, mixins.CreateModelMixin):
     serializer_class = PublicationLikeSerializer
 
     def post(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return HttpResponse(status=401)
         return self.create(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):

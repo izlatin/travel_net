@@ -11,6 +11,12 @@
         width: 100%;
     }
 
+    @media (max-width: 700px) {
+        #map {
+            top: 50px;
+        }
+    }
+
     #help {
         display: table;
         position: relative;
@@ -24,6 +30,7 @@
         text-align: center;
         color: #222;
         background: #fff;
+        max-width: 50vw;
     }
     </style>
     <div id="map"></div>
@@ -63,7 +70,9 @@
         let icon_size = 70;
 
 
-        el.style.backgroundImage = `url(https://placekitten.com/g/${icon_size}/${icon_size}/)`;
+        if (!post.attachment) return;
+
+        el.style.backgroundImage = `url(${post.attachment})`;
         icon_size += 'px';
         el.style.width = icon_size;
         el.style.height = icon_size;
@@ -77,7 +86,7 @@
             .setHTML(`
                                     <div class='popup_mapbox'>
                                         <h5>${truncate(post['text'])}</h5>
-                                        <button type="button" class="btn btn-light" href="#">Перейти</button>
+                                        <a target="_blank" href=${post.url_for} class="btn btn-primary btn-lg active" role="button">Перейти</a>
                                     </div>
                                 `);
         console.log(post)
@@ -108,8 +117,8 @@
     map.dragRotate.disable();
     map.touchZoomRotate.disableRotation();
 
-    for(let post of posts){
-            create_post_marker(post);
+    for (let post of posts) {
+        create_post_marker(post);
     }
     </script>
 </body>

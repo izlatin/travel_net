@@ -22,7 +22,7 @@
         {#        <img class="point" src="{% static 'img/other/point.png' %}">#}
         <a target="_blank" href="https://maps.yandex.ru/?text={{ post.location.1 }}+{{ post.location.0 }}">Открыть на
             Яндекс.Карты</a>
-        <a href="{% url 'publications:detail_publication' pk=post.id %}" class="float-end">Посмотреть вложения ({{ post.attachment_set.count }})</a>
+        <a href="{% url 'publications:detail_publication' pk=post.id %}" class="float-end">Открыть пост</a>
     </div>
     <br>
 
@@ -30,6 +30,16 @@
         <span value="{{ post.id }}" hidden></span>
         <p class="">{{ post.text }}</p>
     </div>
+
+    {% for attachment in post.attachment_set.all %}
+        <div class="attachments container mb-5 text-center">
+            {% if attachment.file_type == "Photo" %}
+                <img src="{{ attachment.file.url }}" class="rounded img-fluid text-muted" alt="">
+            {% else %}
+                <video src="{{ attachment.file.url }}" class="img-fluid"></video>
+            {% endif %}
+        </div>
+    {% endfor %}
 
     <div class="post-footer">
         <div class="likes" id="likes">
@@ -39,14 +49,14 @@
                      data-is-liked="1"
                      data-id="{{ post.id }}"
                      src="{% static 'img/other/liked.png' %}"
-                     width="25" alt="like/unlike button">
+                     width="50" alt="like/unlike button">
             {% else %}
                 <img class="like-button"
                      data-src-other="{% static 'img/other/liked.png' %}"
                      data-is-liked="0"
                      data-id="{{ post.id }}"
                      src="{% static 'img/other/unliked.png' %}"
-                     width="25" alt="like/unlike button">
+                     width="50" alt="like/unlike button">
             {% endif %}
             <div><span class="like-count" id="like_count">{{ post.publicationlike_set.count }}</span></div>
         </div>
