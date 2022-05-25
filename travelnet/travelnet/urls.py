@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.conf import settings
-from rest_framework import routers
 
 from rating import views
 
@@ -19,11 +18,11 @@ urlpatterns = [
 
     # TODO: убрать это отсюда
     path('api/v1/likes', views.PublicationLikeViews.as_view()),
-
+    path('api/v1/comments', views.CommentViews.as_view()),
+    path('api/v1/comment-likes', views.CommentLikeViews.as_view()),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

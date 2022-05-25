@@ -3,45 +3,112 @@
 
 <div class="container-lg publication">
     <div class="post-header">
-        {% thumbnail post.author.image "50x50" crop="center" as im %}
+        <div class="publication-avatar">
+            {% if post.author.image %}
+            {% thumbnail post.author.image "50x50" crop="center" as im %}
             <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"
                  alt="{{ post.author }}'s profile picture">
-        {% endthumbnail %}
-        <span>{{ post.author }}</span>
+            {% endthumbnail %}
+            {% else %}
+            {# TODO: standard user pfp #}
+            {% endif %}
+        </div>
+        <h4 class="username"><a
+                href="{% url 'users:user_detail' user_id=post.author.id %}">{{ post.author.username }}</a></h4><br>
         <p class="text-muted">Опубликованно {{ post.datetime_created }}</p>
     </div>
+
+    <div class="location">
+        {# <img class="point" src="{% static 'img/other/point.png' %}">#}
+        <a target="_blank" href="https://maps.yandex.ru/?text={{ post.location.1 }}+{{ post.location.0 }}">Открыть на
+            Яндекс.Карты</a>
+        <a href="{% url 'publications:detail_publication' pk=post.id %}" class="float-end">Открыть пост</a>
+    </div>
+    <br>
 
     <div class="post-main">
         <span value="{{ post.id }}" hidden></span>
         <p class="">{{ post.text }}</p>
-        {# TODO: add map #}
     </div>
+
+    {% for attachment in post.attachment_set.all %}
+    <div class="attachments container mb-5 text-center">
+        {% if attachment.file_type == "Photo" %}
+        <img src="{{ attachment.file.url }}" class="rounded img-fluid text-muted" alt="">
+        {% else %}
+        <video src="{{ attachment.file.url }}" class="img-fluid"></video>
+        {% endif %}
+    </div>
+    {% endfor %}
 
     <div class="post-footer">
         <div class="likes" id="likes">
-            <span class="like_count" id="like_count">{{ post.publicationlike_set.count }}</span>
-            <span {% if user.is_authenticated %}id="like_button" class="like_button"{% endif %}>
-                <img
-                        data-src-other="{% if user.id not in post.publicationlike_set.users_liked_list %}{% static 'img/other/liked.png' %}{% else %}{% static 'img/other/unliked.png' %}{% endif %}"
-                        data-is-liked="{% if user.id in post.publicationlike_set.users_liked_list %}1{% else %}0{% endif %}"
-                        data-id="{{ post.id }}"
-                        src="{% if user.id in post.publicationlike_set.users_liked_list %}{% static 'img/other/liked.png' %}{% else %}{% static 'img/other/unliked.png' %}{% endif %}"
-                        width="25" alt="post unliked"
-                >
-            </span>
+            {% if user.id in post.publicationlike_set.users_liked_list %}
+            <img class="like-button"
+                 data-src-other="{% static 'img/other/unliked.png' %}"
+                 data-is-liked="1"
+                 data-id="{{ post.id }}"
+                 src="{% static 'img/other/liked.png' %}"
+                 width="50" alt="like/unlike button">
+            {% else %}
+            <img class="like-button"
+                 data-src-other="{% static 'img/other/liked.png' %}"
+                 data-is-liked="0"
+                 data-id="{{ post.id }}"
+                 src="{% static 'img/other/unliked.png' %}"
+                 width="50" alt="like/unlike button">
+            {% endif %}
+            <div><span class="like-count" id="like_count">{{ post.publicationlike_set.count }}</span></div>
         </div>
-        <div class="comments">
-            {% for comment in post.comment_set.all %}
+        <div class="comments mb-2">
+            <div id="comment-list">
+                {% for comment in post.comment_set.order_by_like_count %}
                 <div class="comment">
-                    <p>коммент от {{ comment.author }}</p>
-                    <p>Текст: {{ comment.text }}</p>
+                    <p style="font-style: italic">Комментарий от <a
+                            href="{% url 'users:user_detail' user_id=comment.author.id %}">{{ comment.author.username }}</a>
+                        {% if comment.responding_to %}
+                        в ответ
+                        <a href="{% url 'users:user_detail' user_id=comment.responding_to.author.id %}">{{ comment.responding_to.author.username }}</a>
+                        "{{ comment.responding_to.text|truncatechars:10 }}"
+                        {% endif %}
+                        {# TODO: post deletion #}
+                        {# <span class="float-end me-3">DEL</span>#}
+                    </p>
+
+                    <p class="comment-text">
+                        <span>{{ comment.text }}</span>
+                        <span class="float-end"><span>{{ comment.commentlike_set.count }}</span>
+                                {% if user.id in comment.commentlike_set.users_liked_list %}
+                                    <img class="comment-like-button"
+                                         data-src-other="{% static 'img/other/unliked.png' %}"
+                                         data-is-liked="1"
+                                         data-id="{{ comment.id }}"
+                                         src="{% static 'img/other/liked.png' %}"
+                                         width="20" alt="like/unlike button">
+                                {% else %}
+                                    <img class="comment-like-button"
+                                         data-src-other="{% static 'img/other/liked.png' %}"
+                                         data-is-liked="0"
+                                         data-id="{{ comment.id }}"
+                                         src="{% static 'img/other/unliked.png' %}"
+                                         width="20" alt="like/unlike button">
+                                {% endif %}
+                            </span>
+                    </p>
                 </div>
                 {% empty %}
-                <p class="text-muted">оп, еще никто не оставлял комментарии здесь..</p>
-            {% endfor %}
+                <p id="no-comment-text" class="text-muted">оп, еще никто не оставлял комментарии здесь..</p>
+                {% endfor %}
+            </div>
+            {% if user.is_authenticated %}
+            <form class="row px-3 justify-content-between me-1" id="comment-form" data-id="{{ post.id }}">
+                <label style="font-style: italic" class="mb-2" for="comment-input">Ваш комментарий</label>
+                <input id="comment-input" type="text" class="form-control me-4 w-auto flex-grow-1 float-start"
+                       placeholder="вау вот это пост!!">
+                <input type="submit" class="btn btn-secondary w-auto float-end" value="Отправить!">
+            </form>
+            {% endif %}
         </div>
     </div>
 
 </div>
-<hr>
-

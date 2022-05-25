@@ -3,14 +3,18 @@
   <i class="fa fa-user-o" aria-hidden="true"></i>
   Главная
 </a>
-<a href="#">
+<a href="{% url 'map:posts' %}">
   <i class="fa fa-clone" aria-hidden="true"></i>
   Карта
 </a>
 {% if user.is_authenticated %}
-  <a href="{% url 'users:profile' %}">
+  <a href="{% url 'users:user_detail' user_id=user.id %}">
     <i class="fa fa-star-o" aria-hidden="true"></i>
     Профиль
+  </a>
+  <a href="{% url 'users:logout' %}">
+    <i class="fa fa-star-o" aria-hidden="true"></i>
+    Выйти
   </a>
 {% else %}
   <a href="{% url 'users:login' %}">

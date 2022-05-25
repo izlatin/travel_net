@@ -1,26 +1,42 @@
 from datetime import datetime
 
-import sorl
 from django import forms
 from django.contrib.auth import get_user_model, forms as auth_forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
 from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 
 from .models import Profile
 
 
 class SignupForm(UserCreationForm):
-    username = forms.CharField(label='Имя пользователя', max_length=255, help_text='Обязательно')
-    email = forms.EmailField(max_length=200, help_text='Обязательно')
+    username = forms.CharField(label='Имя пользователя', max_length=255, help_text='Обязательно',
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}))
+    email = forms.EmailField(max_length=200, help_text='Обязательно',
+                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}))
+    password1 = forms.CharField(label=_("Password"),
+                                widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': ''}))
+    password2 = forms.CharField(label=_("Password confirmation"),
+                                widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': ''}),
+                                help_text=_("Повторите пароль"))
 
     class Meta:
         model = get_user_model()
         fields = ('username', 'email', 'password1', 'password2')
+        widgets = {'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': ''})}
 
 
 class UserDataForm(forms.ModelForm):
     remove_photo = forms.BooleanField(label="Удалить фото", required=False, initial=False)
     image = forms.ImageField(label='Аватар', required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            if visible.widget_type == 'checkbox':
+                visible.field.widget.attrs['class'] = 'form-check-control'
+            else:
+                visible.field.widget.attrs['class'] = 'form-control'
 
     def clean(self):
         email = self.cleaned_data.get('email')
@@ -53,6 +69,11 @@ class UserDataForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control col-2 w-auto ms-3'
+
     class Meta:
         model = Profile
         fields = ['birthday']
@@ -64,3 +85,18 @@ class UserCreationForm(auth_forms.UserCreationForm):
     class Meta(auth_forms.UserCreationForm.Meta):
         model = get_user_model()
         fields = ("username", "email")
+
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+    username = UsernameField(widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': ''}))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': '',
+            'id': 'hi',
+        }
+))

@@ -1,15 +1,26 @@
+import datetime
+
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Q
+
+
+class PublicationQueryset(models.QuerySet):
+    def select_and_prefetch(self):
+        res = self.select_related('author').prefetch_related('publicationlike_set') \
+                   .prefetch_related('comment_set').prefetch_related('comment_set__commentlike_set') \
+                   .prefetch_related('comment_set__author').prefetch_related('publicationlike_set__author')
+        return res
 
 
 class PublicationManager(models.Manager):
-    def popular_posts(self, post_count):
-        # TODO: try to make a better "popular posts" algorithm, maybe use some metadata?
-        # TODO: not sure the ordering is correct here, check it (+below aswell)
-        return self.filter(visible=True).prefetch_related('publicationlike_set').prefetch_related(
-            'comment_set').annotate(publication_count=Count('publicationlike')).order_by(
-            'publication_count', '-datetime_created')[:post_count]
+    def get_queryset(self):
+        return PublicationQueryset(model=self.model, using=self._db)
 
-    def user_feed(self, user, post_count):
-        return self.filter(visible=True).prefetch_related('publicationlike_set').prefetch_related(
-            'publication_set').filter(author__in=user.follows.all()).order_by('-datetime_created')[:post_count]
+    def popular_posts(self, datetime_created_after=(datetime.datetime.now() - datetime.timedelta(days=14))):
+        return self.get_queryset().select_and_prefetch() \
+                   .filter(visible=True, datetime_created__gt=datetime_created_after) \
+                   .annotate(publicationlike_count=Count('publicationlike')) \
+                   .order_by('-publicationlike', '-datetime_created')
+
+    def user_feed(self, user):
+        return self.get_queryset().select_and_prefetch().filter(visible=True).filter(Q(author__in=user.follows.all()) | Q(author=user)).order_by('-datetime_created')

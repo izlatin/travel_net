@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -15,7 +16,8 @@ def signup(request):
             email = form.cleaned_data.get('email')
             raw_password = form.cleaned_data.get('password1')
             user = get_user_model().objects.create_user(password=raw_password, username=username, email=email)
-            user = authenticate(email=email, password=raw_password)
+            # why authenticate() when we just created the user?
+            # user = authenticate(email=email, password=raw_password)
             login(request, user)
             return redirect(reverse('homepage:home'))
     else:
@@ -47,3 +49,23 @@ def profile(request):
 
 def profile_edit_success(request):
     return redirect('users:profile')
+
+
+def user_detail(request, user_id):
+    user = get_user_model().objects.get(pk=user_id)
+
+    publication_set = user.publication_set.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(publication_set, 5)
+    try:
+        publications = paginator.page(page)
+    except PageNotAnInteger:
+        publications = paginator.page(1)
+    except EmptyPage:
+        publications = paginator.page(paginator.num_pages)
+    context = {
+        'user': user,
+        'current_user': request.user,
+        'publications': publications,
+    }
+    return render(request, "users/user_detail.html", context)

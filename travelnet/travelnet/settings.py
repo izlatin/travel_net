@@ -8,11 +8,12 @@ env = environ.Env()
 environ.Env.read_env(env_file='.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(join(BASE_DIR, '.env'))
+environ.Env.read_env(join(BASE_DIR.parent, '.env'))
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
+MAPBOX_TOKEN = env('MAPBOX_TOKEN')
 
 # Application definition
 
@@ -29,6 +30,7 @@ INSTALLED_APPS = [
     'publications.apps.PublicationsConfig',
     'rating.apps.RatingConfig',
     'about.apps.AboutConfig',
+    'core.apps.CoreConfig',
 
     'map',
 
@@ -36,7 +38,10 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'debug_toolbar',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+
+    'mapbox_location_field',
+    "bootstrap4",
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -130,7 +135,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
@@ -141,7 +145,10 @@ REST_FRAMEWORK = {
     ],
 }
 
+MAPBOX_KEY = MAPBOX_TOKEN
+
 if DEBUG:
     # нужно для debug_toolbar
     import mimetypes
+
     mimetypes.add_type("application/javascript", ".js", True)

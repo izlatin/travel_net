@@ -43,7 +43,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
-    username = models.CharField(_('username'), unique=True, max_length=255)
+    username = models.CharField(_('username'), unique=True, max_length=30)
     email = models.EmailField(_('email address'), unique=True)
     image = models.ImageField(_('аватар'), upload_to='uploads/', null=True, blank=True)
 
@@ -54,6 +54,9 @@ class CustomUser(AbstractUser):
 
     objects = CustomUserManager()
 
+    def get_image_200x200(self):
+        return get_thumbnail(self.image, '200x200', crop='center', quality=51)
+
     def get_image_300x300(self):
         return get_thumbnail(self.image, '300x300', crop='center', quality=51)
 
@@ -63,6 +66,7 @@ class CustomUser(AbstractUser):
                 f'<img src="{self.image.url}" width="50">'
             )
         return 'Нет изображения'
+
     image_tmb.short_description = 'превью'
     image_tmb.allow_tags = True
 
@@ -90,5 +94,9 @@ class Profile(models.Model):
 @receiver(post_save, sender=CustomUser)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
+        # if instance.image.name is None:
+        #     instance.image = requests.get('https://thiscatdoesnotexist.com')
+        #     instance.save()
         Profile.objects.create(user=instance)
+
     instance.profile.save()
