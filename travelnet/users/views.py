@@ -35,7 +35,7 @@ def profile(request):
             data_form.save()
             user.profile.birthday = profile_form.cleaned_data["birthday"]
             user.save()
-            return redirect(reverse('users:profile_edit_success'))
+            return redirect(reverse('users:profile'))
     else:
         data_form = UserDataForm(initial={"email": user.email, "first_name": user.first_name,
                                           "last_name": user.last_name, "remove_photo": False})
@@ -45,11 +45,6 @@ def profile(request):
         "profile_form": profile_form
     }
     return render(request, "users/profile.html", context)
-
-
-def profile_edit_success(request):
-    # this func reloads profile view after editing personal data, so the form will be saved and reloaded
-    return redirect('users:profile')
 
 
 def user_detail(request, user_id):
