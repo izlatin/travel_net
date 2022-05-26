@@ -47,6 +47,7 @@ def profile(request):
 
 
 def profile_edit_success(request):
+    # this func reloads profile view after editing personal data, so the form will be saved and reloaded
     return redirect('users:profile')
 
 
