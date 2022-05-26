@@ -3,7 +3,8 @@
     Регистрация
 {% endblock %}
 {% block content %}
-    <p><span class="h1">Регистрация</span> <span class="h4 fw-normal text-secondary">Уже есть аккаунт? <a href="{% url 'users:login' %}">Войти</a></span></p>
+    <p><span class="h1">Регистрация</span> <span class="h4 fw-normal text-secondary">Уже есть аккаунт? <a
+            href="{% url 'users:login' %}">Войти</a></span></p>
     <form action="" method="post" class="pe-4">
         {% csrf_token %}
         {{ form.as_p }}

@@ -1,6 +1,6 @@
 from django.urls import reverse
-
 from django.views.generic import TemplateView
+
 from publications.models import Publication
 from publications.serializers import PublicationSerializer
 from travelnet.settings import MAPBOX_TOKEN

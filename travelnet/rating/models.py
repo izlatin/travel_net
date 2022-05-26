@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models import Count, F, Q
 
 from publications.models import Publication, AuthorMixin, DatetimeCreatedMixin, VisibleMixin
 from rating.managers import CommentManager, CommentLikeManager

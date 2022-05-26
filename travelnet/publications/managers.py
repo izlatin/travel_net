@@ -7,8 +7,8 @@ from django.db.models import Count, Q
 class PublicationQueryset(models.QuerySet):
     def select_and_prefetch(self):
         res = self.select_related('author').prefetch_related('publicationlike_set') \
-                   .prefetch_related('comment_set').prefetch_related('comment_set__commentlike_set') \
-                   .prefetch_related('comment_set__author').prefetch_related('publicationlike_set__author')
+            .prefetch_related('comment_set').prefetch_related('comment_set__commentlike_set') \
+            .prefetch_related('comment_set__author').prefetch_related('publicationlike_set__author')
         return res
 
 
@@ -18,9 +18,10 @@ class PublicationManager(models.Manager):
 
     def popular_posts(self, datetime_created_after=(datetime.datetime.now() - datetime.timedelta(days=14))):
         return self.get_queryset().select_and_prefetch() \
-                   .filter(visible=True, datetime_created__gt=datetime_created_after) \
-                   .annotate(publicationlike_count=Count('publicationlike')) \
-                   .order_by('-publicationlike', '-datetime_created')
+            .filter(visible=True, datetime_created__gt=datetime_created_after) \
+            .annotate(publicationlike_count=Count('publicationlike')) \
+            .order_by('-publicationlike', '-datetime_created')
 
     def user_feed(self, user):
-        return self.get_queryset().select_and_prefetch().filter(visible=True).filter(Q(author__in=user.follows.all()) | Q(author=user)).order_by('-datetime_created')
+        return self.get_queryset().select_and_prefetch().filter(visible=True).filter(
+            Q(author__in=user.follows.all()) | Q(author=user)).order_by('-datetime_created')
