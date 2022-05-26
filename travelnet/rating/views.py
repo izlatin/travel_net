@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from rest_framework import generics, status, mixins
 from rest_framework.response import Response
@@ -9,9 +10,8 @@ from rating.serializers import PublicationLikeSerializer, CommentSerializer, Com
 class PublicationLikeViews(generics.GenericAPIView, mixins.CreateModelMixin):
     serializer_class = PublicationLikeSerializer
 
+    @login_required
     def post(self, request, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return HttpResponse(status=401)
         return self.create(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
