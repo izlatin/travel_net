@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% block title %}
-  Регистрация
+    Регистрация
 {% endblock %}
 {% block content %}
-  <h1>Регистрация</h1>
-  <form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
-  </form>
-<h2>Уже есть аккаунт? <a href="{% url 'users:login' %}">Войти</a></h2>
+    <p><span class="h1">Регистрация</span> <span class="h4 fw-normal text-secondary">Уже есть аккаунт? <a href="{% url 'users:login' %}">Войти</a></span></p>
+    <form action="" method="post" class="pe-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+    </form>
 {% endblock %}

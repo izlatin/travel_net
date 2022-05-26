@@ -1,12 +1,11 @@
 import datetime
 
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.views import View
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
 from publications.forms import CreatePublicationForm
-from publications.models import Publication
+from publications.models import Publication, Attachment
 
 
 class PublicationList(ListView):
@@ -15,21 +14,33 @@ class PublicationList(ListView):
     context_object_name = 'publications'
 
     def get_queryset(self):
-        post_count = 5
         datetime_most_popular_created_before = datetime.datetime.now() - datetime.timedelta(days=14)
 
         # если чел разлогинен или у него 0 подписок, кидаем популярные посты
         # иначе кидаем посты из подписок
-        if not self.request.user.is_authenticated or self.request.user.follows.count() == 0:
-            return Publication.objects.popular_posts(post_count,
-                                                     datetime_created_after=datetime_most_popular_created_before)
-        return Publication.objects.popular_posts(post_count,
-                                                 datetime_created_after=datetime_most_popular_created_before)
+        q2 = Publication.objects.popular_posts(datetime_created_after=datetime_most_popular_created_before)
 
-        return Publication.objects.user_feed(self.request.user, post_count)
+        if not self.request.user.is_authenticated or self.request.user.follows.count() == 0:
+            return q2
+        q1 = Publication.objects.user_feed(self.request.user)
+        res = (q1 & q2).distinct()
+        return res
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+
+        object_list = context['object_list']
+        page = self.request.GET.get('page', 1)
+        paginator = Paginator(object_list, 5)
+        try:
+            numbers = paginator.page(page)
+        except PageNotAnInteger:
+            numbers = paginator.page(1)
+        except EmptyPage:
+            numbers = paginator.page(paginator.num_pages)
+
+        context['publications'] = numbers
+
         context['new_publication_form'] = CreatePublicationForm()
         return context
 
@@ -46,29 +57,27 @@ class CreatePublicationView(CreateView):
     model = Publication
     template_name = 'publications/create_publication.html'
     form_class = CreatePublicationForm
+    success_url = reverse_lazy('publications:publication_list')
+    object = None
 
-    # def post(self, request):
-    #     form = CreatePublicationForm(request.POST)
-    #     if form.is_valid():
-    #         post = Publication.objects.create(
-    #             text=form.cleaned_data['text'],
-    #             location=form.cleaned_data['location'],
-    #             author=request.user)
-    #         post.save()
-    #         return redirect(reverse('users:user_detail', kwargs={'user_id': request.user.id}))
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
 
-
-def create_publication(request):
-    if request.method == 'POST':
-        form = CreatePublicationForm(request.POST)
         if form.is_valid():
-            post = Publication.objects.create(
-                text=form.cleaned_data['text'],
-                location=form.cleaned_data['location'],
-                author=request.user)
-            post.save()
-            return redirect(reverse('users:user_detail', kwargs={'user_id': request.user.id}))
-    else:
-        form = CreatePublicationForm()
-    context = {'form': form}
-    return render(request, 'publications/create_publication.html', context)
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        publication = form.save(commit=False)
+        publication.author = self.request.user
+        publication.save()
+
+        files = self.request.FILES.getlist('file')
+        if form.is_valid():
+            for f in files:
+                Attachment.objects.create(
+                    author=self.request.user, publication_id=publication.id, file_type='Photo', file=f
+                )
+
+        return super().form_valid(form)

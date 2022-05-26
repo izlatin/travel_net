@@ -3,7 +3,21 @@
 
 <body>
     <style type="text/css">
-    #info {
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    @media (max-width: 700px) {
+        #map {
+            top: 50px;
+        }
+    }
+
+    #help {
         display: table;
         position: relative;
         margin: 0px auto;
@@ -16,10 +30,11 @@
         text-align: center;
         color: #222;
         background: #fff;
+        max-width: 50vw;
     }
     </style>
     <div id="map"></div>
-    <pre id="info"></pre>
+    <pre id="help">На карте показаны самые популярные посты за последнее время!</pre>
     {{ posts|json_script:"hello-data" }}
     <script>
     function getRandomInt(min, max) {
@@ -51,9 +66,13 @@
         const el = document.createElement('div');
         el.className = 'marker';
 
-        let icon_size = get_icon_size();
+        // let icon_size = get_icon_size();
+        let icon_size = 70;
 
-        el.style.backgroundImage = `url(https://placekitten.com/g/${icon_size}/${icon_size}/)`;
+
+        if (!post.attachment) return;
+
+        el.style.backgroundImage = `url(${post.attachment})`;
         icon_size += 'px';
         el.style.width = icon_size;
         el.style.height = icon_size;
@@ -67,13 +86,13 @@
             .setHTML(`
                                     <div class='popup_mapbox'>
                                         <h5>${truncate(post['text'])}</h5>
-                                        <button type="button" class="btn btn-light" href="#">Перейти</button>
+                                        <a target="_blank" href=${post.url_for} class="btn btn-primary btn-lg active" role="button">Перейти</a>
                                     </div>
                                 `);
-        // console.log(post)
+        console.log(post)
         // Add markers to the map.
         let marker = new mapboxgl.Marker(el)
-            .setLngLat([post.location.longitude, post.location.latitude])
+            .setLngLat(post.location)
             .setPopup(popup)
             .addTo(map);
         currentMarkers.push(marker);
@@ -82,11 +101,12 @@
     mapboxgl.accessToken = '{{token}}';
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
+        style: 'mapbox://styles/alex-bul/cl3j3cjcs007q14mffha4imot',
         zoom: 3,
         minZoom: 3,
         maxZoom: 14,
-        center: [68, -49]
+        language: 'ru',
+        center: [38, 53]
     });
 
     map.addControl(new mapboxgl.NavigationControl());
@@ -97,70 +117,9 @@
     map.dragRotate.disable();
     map.touchZoomRotate.disableRotation();
 
-
-    // Сейчас реализовано тестовое наполнение данными
-    // TODO: запрос постов в определенных координатах, их отображение 
-    map.on('moveend', () => {
-        const bounds = map.getBounds()
-        console.log(bounds, '-------------------------------------')
-
-        for (var i = currentMarkers.length - 1; i >= 0; i--) {
-            currentMarkers[i].remove();
-        }
-        for(let post of posts){
-            create_post_marker(post);
-        }
-
-        // const average_icon_size = 150;
-
-        // const polygon_width = Math.abs(bounds._ne.lng - bounds._sw.lng) / window.innerWidth * average_icon_size;
-        // const polygon_height = Math.abs(bounds._ne.lat - bounds._sw.lat) / window.innerHeight * average_icon_size;
-
-        // const post = {
-        //     author: 1,
-        //     datetime_created: "2022-05-20T19:53:47.836086Z",
-        //     id: 1,
-        //     location: { id: 1, longitude: '54.6842700', latitude: '20.4753900', country: 'Russia', city: 'Kaliningrad' },
-        //     text: "fdghjkl;'ewrf;wf;lf;dslkfksdlfksdkflksdgfksldfklksdfksdf;lkdsk;fk;dskfl;sdkfkds;kfsdlkfkkglkgkggkgkgkgk",
-        //     visible: true
-        // };
-
-        // const lng_start = bounds._sw.lng;
-        // const lat_start = bounds._ne.lat
-
-        // console.log(lng_start, lat_start, [polygon_width, polygon_height])
-
-        // for (let w = 0; w <= Math.floor(window.innerWidth / average_icon_size); w++) {
-        //     for (let h = 0; h <= Math.floor(window.innerHeight / average_icon_size); h++) {
-        //         const lat1 = lat_start - h * polygon_height,
-        //             lat2 = lat_start - (h + 1) * polygon_height;
-        //         const lng1 = lng_start + w * polygon_width,
-        //             lng2 = lng_start + (w + 1) * polygon_width;
-
-        //         // console.log([lat1, lat2, lng1, lng2])
-
-        //         const lat = getRandomArbitrary(latmod(lat1), latmod(lat2));
-        //         const lng = getRandomArbitrary(lngmod(lng1), lngmod(lng2));
-
-        //         post.location = { longitude: lng, latitude: lat };
-        //         create_post_marker(post);
-        //     }
-        // }
-
-
-        // console.log(bounds);
-        // console.log(polygon_width, polygon_height);
-    });
-
-    map.on('mousemove', (e) => {
-document.getElementById('info').innerHTML =
-// `e.point` is the x, y coordinates of the `mousemove` event
-// relative to the top-left corner of the map.
-JSON.stringify(e.point) +
-'<br />' +
-// `e.lngLat` is the longitude, latitude geographical position of the event.
-JSON.stringify(e.lngLat.wrap());
-});
+    for (let post of posts) {
+        create_post_marker(post);
+    }
     </script>
 </body>
 {% endblock %}

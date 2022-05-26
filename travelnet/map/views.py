@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.urls import reverse
+
 from django.views.generic import TemplateView
 from publications.models import Publication
-from publications.serializers import PublicationSerializer, LocationSerializer
+from publications.serializers import PublicationSerializer
+from travelnet.settings import MAPBOX_TOKEN
 
 
 class PostsView(TemplateView):
@@ -10,16 +12,24 @@ class PostsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(PostsView, self).get_context_data(**kwargs)
 
-        token = 'pk.eyJ1IjoiYWxleC1idWwiLCJhIjoiY2tleGNpaTI1MDAwazJ5bzJucWgyMmh3aiJ9.N1pXrpkKMv4NfecZmZa3TA'
-        posts = Publication.objects.popular_posts(100).select_related('location')
+        token = MAPBOX_TOKEN
+        posts = Publication.objects.popular_posts().select_related()[:100]
 
         prepared_posts = []
         for post in posts:
-            location = post.location
-            post = PublicationSerializer(post).data
-            post['location'] = LocationSerializer(location).data
-            prepared_posts.append(post)
+            attachment = None
+            attachment_link = None
 
+            for at in post.attachment_set.all():
+                if at.file_type == "Photo":
+                    attachment = at
+                    break
+            if attachment and attachment.file_type == "Photo":
+                attachment_link = attachment.file.url
+            post = PublicationSerializer(post).data
+            post["url_for"] = reverse('publications:detail_publication', kwargs={'pk': post['id']})
+            post['attachment'] = attachment_link
+            prepared_posts.append(post)
         context['posts'] = prepared_posts
         context['token'] = token
 

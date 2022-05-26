@@ -1,0 +1,51 @@
+﻿<div class="top-nav">
+    <div>
+        <h2>Travel.Net</h2>
+    </div>
+    <input id="menu-toggle" type="checkbox"/>
+    <label class='menu-button-container' for="menu-toggle">
+        <div class='menu-button'></div>
+    </label>
+    <ul class="menu">
+        <li>
+            <a href="{% url 'homepage:home' %}">
+                <i class="fa fa-user-o" aria-hidden="true"></i>
+                Главная
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'map:posts' %}">
+                <i class="fa fa-clone" aria-hidden="true"></i>
+                Карта
+            </a>
+        </li>
+
+        {% if user.is_authenticated %}
+        <li>
+            <a href="{% url 'users:user_detail' user_id=user.id %}">
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                Профиль
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'users:logout' %}">
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                Выйти
+            </a>
+        </li>
+        {% else %}
+        <li>
+            <a href="{% url 'users:login' %}">
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+                Войти
+            </a>
+        </li>
+        {% endif %}
+        <li>
+            <a href="{% url 'about:description' %}">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                Помощь
+            </a>
+        </li>
+    </ul>
+</div>

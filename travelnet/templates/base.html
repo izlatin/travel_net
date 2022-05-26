@@ -4,9 +4,6 @@
 <head>
     <title>{% block title %} Travel.Net {% endblock %} - Travel.Net</title>
 
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet'/>
-
     <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
@@ -17,6 +14,17 @@
     <link rel="mask-icon" href="{% static 'img/fav/safari-pinned-tab.svg' %}" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet'/>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -29,15 +37,19 @@
             const UNLIKED_PNG_URL = "{% static 'img/other/unliked.png' %}";
             const LIKED_PNG_URL = "{% static 'img/other/liked.png' %}";
         {% endif %}
+
+
     </script>
     {% block head %}{% endblock %}
 </head>
+{% include "includes/header_mobile.html" %}
 <body>
 {% include "includes/navigation.html" %}
 <main>
     {% block content %} Главная информация {% endblock %}
 </main>
 </body>
+<script src="{% static 'js/likes.js' %}"></script>
 {% block scripts %}{% endblock %}
 
 </html>
