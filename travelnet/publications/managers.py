@@ -3,6 +3,8 @@ import datetime
 from django.db import models
 from django.db.models import Count, Q
 
+from rating.models import FollowingRelation
+
 
 class PublicationQueryset(models.QuerySet):
     def select_and_prefetch(self):
@@ -24,4 +26,4 @@ class PublicationManager(models.Manager):
 
     def user_feed(self, user):
         return self.get_queryset().select_and_prefetch().filter(visible=True).filter(
-            Q(author__in=user.follows.all()) | Q(author=user)).order_by('-datetime_created')
+            Q(author_id__in=FollowingRelation.objects.get_subscription_queryset_from_user(user)) | Q(author=user)).order_by('-datetime_created')

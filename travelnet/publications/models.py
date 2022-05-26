@@ -3,30 +3,12 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from mapbox_location_field.models import LocationField
 
+from core.mixins import AuthorMixin, DatetimeCreatedMixin, VisibleMixin
 from .managers import PublicationManager
 from .validators import validate_photo_or_video
 
 
 # TODO: move these mixins to a separate file
-class DatetimeCreatedMixin(models.Model):
-    datetime_created = models.DateTimeField('Дата создания', auto_now_add=True)
-
-    class Meta:
-        abstract = True
-
-
-class VisibleMixin(models.Model):
-    visible = models.BooleanField('Видимость', default=True)
-
-    class Meta:
-        abstract = True
-
-
-class AuthorMixin(models.Model):
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name='Автор')
-
-    class Meta:
-        abstract = True
 
 
 class Publication(AuthorMixin, DatetimeCreatedMixin, VisibleMixin):

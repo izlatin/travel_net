@@ -47,7 +47,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     image = models.ImageField(_('аватар'), upload_to='uploads/', null=True, blank=True)
 
-    follows = models.ManyToManyField('self', verbose_name=_('Подписки'), symmetrical=False)
+    # follows = models.ManyToManyField('self', verbose_name=_('Подписки'), symmetrical=False)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
