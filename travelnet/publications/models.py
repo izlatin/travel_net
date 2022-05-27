@@ -1,11 +1,9 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from mapbox_location_field.models import LocationField
 
 from core.mixins import AuthorMixin, DatetimeCreatedMixin, VisibleMixin
 from .managers import PublicationManager
-from .validators import validate_photo_or_video
 
 
 # TODO: move these mixins to a separate file
@@ -34,7 +32,7 @@ class Attachment(DatetimeCreatedMixin, AuthorMixin):
         PHOTO = "Photo", _("Фото")
         VIDEO = "Video", _("Видео")
 
-    file = models.FileField('Приложение', upload_to='attachments/', validators=[validate_photo_or_video])
+    file = models.ImageField('Приложение', upload_to='attachments/')
     file_type = models.CharField('Тип файла', choices=AttachmentType.choices, max_length=10)
 
     publication = models.ForeignKey(Publication, on_delete=models.CASCADE, verbose_name='Публикация')
