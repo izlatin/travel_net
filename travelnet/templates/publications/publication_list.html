@@ -24,13 +24,43 @@
     {% endif %}
 
     <script>
-        var infinite = new Waypoint.Infinite({
+        let infinite = new Waypoint.Infinite({
             element: $('.infinite-container')[0],
             onBeforePageLoad: function () {
                 $('.loading').show();
             },
             onAfterPageLoad: function ($items) {
                 $('.loading').hide();
+                for (let item_index in $items) {
+                    let item = $items[item_index];
+
+                    let publicationLikeButtons = item.getElementsByClassName('like-button');
+                    for (let btn_index in publicationLikeButtons) {
+                        let btn = publicationLikeButtons[btn_index];
+                        try {
+                            btn.addEventListener('click', onLikePublicationButtonClick)
+                        } catch (e) {
+                        }
+                    }
+
+                    let commentLikeButtons = item.getElementsByClassName('comment-like-button');
+                    for (let btn_index in commentLikeButtons) {
+                        let btn = commentLikeButtons[btn_index];
+                        try {
+                            btn.addEventListener('click', onCommentLikeButtonClick)
+                        } catch (e) {
+                        }
+                    }
+
+                    let commentForms = item.querySelectorAll('[id=comment-form]');
+                    for (let btn_index in commentForms) {
+                        let form = commentForms[btn_index];
+                        try {
+                            form.onsubmit = onCommentFormSubmit
+                        } catch (e) {
+                        }
+                    }
+                }
             }
         });
     </script>

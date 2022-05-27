@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.utils.decorators import method_decorator
 from rest_framework import generics, status, mixins
 from rest_framework.response import Response
 
@@ -7,10 +8,10 @@ from rating.models import PublicationLike, CommentLike
 from rating.serializers import PublicationLikeSerializer, CommentSerializer, CommentLikeSerializer
 
 
+@method_decorator(login_required, name='post')
 class PublicationLikeViews(generics.GenericAPIView, mixins.CreateModelMixin):
     serializer_class = PublicationLikeSerializer
 
-    @login_required
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
