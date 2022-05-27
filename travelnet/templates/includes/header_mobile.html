@@ -21,25 +21,25 @@
         </li>
 
         {% if user.is_authenticated %}
-        <li>
-            <a href="{% url 'users:user_detail' user_id=user.id %}">
-                <i class="fa fa-star-o" aria-hidden="true"></i>
-                Профиль
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'users:logout' %}">
-                <i class="fa fa-star-o" aria-hidden="true"></i>
-                Выйти
-            </a>
-        </li>
+            <li>
+                <a href="{% url 'users:user_detail' user_id=user.id %}">
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                    Профиль
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'users:logout' %}">
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                    Выйти
+                </a>
+            </li>
         {% else %}
-        <li>
-            <a href="{% url 'users:login' %}">
-                <i class="fa fa-star-o" aria-hidden="true"></i>
-                Войти
-            </a>
-        </li>
+            <li>
+                <a href="{% url 'users:login' %}">
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                    Войти
+                </a>
+            </li>
         {% endif %}
         <li>
             <a href="{% url 'about:description' %}">

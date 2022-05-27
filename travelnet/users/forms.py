@@ -99,4 +99,4 @@ class LoginForm(AuthenticationForm):
             'placeholder': '',
             'id': 'hi',
         }
-))
+    ))

@@ -1,125 +1,122 @@
 {% extends "base.html" %}
 {% block content %}
 
-<body>
+    <body>
     <style type="text/css">
-    #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-    }
-
-    @media (max-width: 700px) {
         #map {
-            top: 50px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
         }
-    }
 
-    #help {
-        display: table;
-        position: relative;
-        margin: 0px auto;
-        word-wrap: anywhere;
-        white-space: pre-wrap;
-        padding: 10px;
-        border: none;
-        border-radius: 3px;
-        font-size: 12px;
-        text-align: center;
-        color: #222;
-        background: #fff;
-        max-width: 50vw;
-    }
+        @media (max-width: 700px) {
+            #map {
+                top: 50px;
+            }
+        }
+
+        #help {
+            display: table;
+            position: relative;
+            margin: 0px auto;
+            word-wrap: anywhere;
+            white-space: pre-wrap;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            font-size: 12px;
+            text-align: center;
+            color: #222;
+            background: #fff;
+            max-width: 50vw;
+        }
     </style>
     <div id="map"></div>
     <pre id="help">На карте показаны самые популярные посты за последнее время!</pre>
     {{ posts|json_script:"hello-data" }}
     <script>
-    function getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min)) + min;
-    }
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
 
-    function getRandomArbitrary(a, b) {
-        let min = Math.min(a, b);
-        let max = Math.max(a, b);
-        return Math.random() * (max - min) + min;
-    }
+        function getRandomArbitrary(a, b) {
+            let min = Math.min(a, b);
+            let max = Math.max(a, b);
+            return Math.random() * (max - min) + min;
+        }
 
-    const truncate_len = 50;
-    const truncate = (input) => input.length > truncate_len ? `${input.substring(0, truncate_len)}...` : input;
+        const truncate_len = 50;
+        const truncate = (input) => input.length > truncate_len ? `${input.substring(0, truncate_len)}...` : input;
 
-    const latmod = (val) => val > 90 ? val % 90 - 90 : val;
-    const lngmod = (val) => val > 180 ? val % 180 - 180 : val;
+        const latmod = (val) => val > 90 ? val % 90 - 90 : val;
+        const lngmod = (val) => val > 180 ? val % 180 - 180 : val;
 
-    let currentMarkers = [];
-
-
+        let currentMarkers = [];
 
 
-    const get_icon_size = () => getRandomInt(30, 100)
+        const get_icon_size = () => getRandomInt(30, 100)
 
-    const create_post_marker = (post) => {
-        const el = document.createElement('div');
-        el.className = 'marker';
+        const create_post_marker = (post) => {
+            const el = document.createElement('div');
+            el.className = 'marker';
 
-        // let icon_size = get_icon_size();
-        let icon_size = 70;
+            // let icon_size = get_icon_size();
+            let icon_size = 70;
 
 
-        if (!post.attachment) return;
+            if (!post.attachment) return;
 
-        el.style.backgroundImage = `url(${post.attachment})`;
-        icon_size += 'px';
-        el.style.width = icon_size;
-        el.style.height = icon_size;
-        el.style.backgroundSize = '100%';
+            el.style.backgroundImage = `url(${post.attachment})`;
+            icon_size += 'px';
+            el.style.width = icon_size;
+            el.style.height = icon_size;
+            el.style.backgroundSize = '100%';
 
-        // el.addEventListener('click', () => {
-        //     window.open('./', '_blank');
-        // });
+            // el.addEventListener('click', () => {
+            //     window.open('./', '_blank');
+            // });
 
-        const popup = new mapboxgl.Popup({ offset: 25 })
-            .setHTML(`
+            const popup = new mapboxgl.Popup({offset: 25})
+                .setHTML(`
                                     <div class='popup_mapbox'>
                                         <h5>${truncate(post['text'])}</h5>
                                         <a target="_blank" href=${post.url_for} class="btn btn-primary btn-lg active" role="button">Перейти</a>
                                     </div>
                                 `);
-        console.log(post)
-        // Add markers to the map.
-        let marker = new mapboxgl.Marker(el)
-            .setLngLat(post.location)
-            .setPopup(popup)
-            .addTo(map);
-        currentMarkers.push(marker);
-    }
+            console.log(post)
+            // Add markers to the map.
+            let marker = new mapboxgl.Marker(el)
+                .setLngLat(post.location)
+                .setPopup(popup)
+                .addTo(map);
+            currentMarkers.push(marker);
+        }
 
-    mapboxgl.accessToken = '{{token}}';
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/alex-bul/cl3j3cjcs007q14mffha4imot',
-        zoom: 3,
-        minZoom: 3,
-        maxZoom: 14,
-        language: 'ru',
-        center: [38, 53]
-    });
+        mapboxgl.accessToken = '{{token}}';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/alex-bul/cl3j3cjcs007q14mffha4imot',
+            zoom: 3,
+            minZoom: 3,
+            maxZoom: 14,
+            language: 'ru',
+            center: [38, 53]
+        });
 
-    map.addControl(new mapboxgl.NavigationControl());
+        map.addControl(new mapboxgl.NavigationControl());
 
 
+        const posts = JSON.parse(document.getElementById('hello-data').textContent);
+        map.dragRotate.disable();
+        map.touchZoomRotate.disableRotation();
 
-    const posts = JSON.parse(document.getElementById('hello-data').textContent);
-    map.dragRotate.disable();
-    map.touchZoomRotate.disableRotation();
-
-    for (let post of posts) {
-        create_post_marker(post);
-    }
+        for (let post of posts) {
+            create_post_marker(post);
+        }
     </script>
-</body>
+    </body>
 {% endblock %}

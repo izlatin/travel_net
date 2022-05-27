@@ -3,7 +3,7 @@ from django.contrib.auth.views import LogoutView, LoginView, PasswordChangeView,
 from django.urls import path
 
 from .forms import LoginForm
-from .views import signup, profile, profile_edit_success, user_detail
+from .views import signup, profile, user_detail
 
 app_name = 'users'
 
@@ -37,5 +37,4 @@ urlpatterns = [
     path('signup/', signup, name="signup"),
     path('edit/profile/', profile, name="profile"),
     path('user_detail/<int:user_id>', user_detail, name="user_detail"),
-    path('profile/edit/success', profile_edit_success, name='profile_edit_success')
 ]

@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('rating', '0002_auto_20220517_0120'),
     ]
@@ -12,6 +11,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddConstraint(
             model_name='publicationlike',
-            constraint=models.UniqueConstraint(fields=('publication', 'author'), name='unique_like_per_user_per_publication'),
+            constraint=models.UniqueConstraint(fields=('publication', 'author'),
+                                               name='unique_like_per_user_per_publication'),
         ),
     ]

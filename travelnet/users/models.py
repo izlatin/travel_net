@@ -1,9 +1,9 @@
 from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.models import AbstractUser
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from sorl.thumbnail import get_thumbnail
@@ -47,7 +47,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     image = models.ImageField(_('аватар'), upload_to='uploads/', null=True, blank=True)
 
-    follows = models.ManyToManyField('self', verbose_name=_('Подписки'), symmetrical=False)
+    # follows = models.ManyToManyField('self', verbose_name=_('Подписки'), symmetrical=False)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']

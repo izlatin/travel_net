@@ -1,4 +1,6 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.utils.decorators import method_decorator
 from rest_framework import generics, status, mixins
 from rest_framework.response import Response
 
@@ -6,12 +8,11 @@ from rating.models import PublicationLike, CommentLike
 from rating.serializers import PublicationLikeSerializer, CommentSerializer, CommentLikeSerializer
 
 
+@method_decorator(login_required, name='post')
 class PublicationLikeViews(generics.GenericAPIView, mixins.CreateModelMixin):
     serializer_class = PublicationLikeSerializer
 
     def post(self, request, *args, **kwargs):
-        if not self.request.user.is_authenticated:
-            return HttpResponse(status=401)
         return self.create(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):

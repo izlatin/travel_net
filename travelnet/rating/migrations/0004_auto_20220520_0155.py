@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('rating', '0003_publicationlike_unique_like_per_user_per_publication'),
     ]

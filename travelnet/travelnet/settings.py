@@ -1,7 +1,7 @@
-import environ
-
 from os.path import join
 from pathlib import Path
+
+import environ
 from django.urls import reverse_lazy
 
 env = environ.Env()

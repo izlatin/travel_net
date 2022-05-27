@@ -1,9 +1,8 @@
 from django.contrib.auth import get_user_model
-from model_bakery.recipe import Recipe, related, foreign_key
-
-from publications.models import Publication
+from model_bakery.recipe import Recipe, foreign_key
 
 from publications.models import Location
+from publications.models import Publication
 
 user = Recipe(get_user_model(), username='lloocchh')
 location = Recipe(Location)

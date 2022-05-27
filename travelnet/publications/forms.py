@@ -19,9 +19,9 @@ class CreatePublicationForm(forms.ModelForm):
 
     author = forms.HiddenInput()
 
-    file = forms.FileField(
+    file = forms.ImageField(
         widget=forms.ClearableFileInput(attrs={'multiple': True, 'class': 'form-control'}),
-        label='Вложения (можно выбрать несколько файлов)', required=False
+        label='Вложения (можно выбрать несколько фото)', required=False
     )
 
     location = BetterLocationFormField(error_messages={'required': 'asdfaskldjfhasdlkjflkajsdf'}, map_attrs={

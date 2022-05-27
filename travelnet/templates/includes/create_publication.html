@@ -1,7 +1,8 @@
 {% load thumbnail %}
 {% load static %}
 
-<form enctype="multipart/form-data" action="{% url 'publications:create_publication' %}" method="post" class="container-lg publication">
+<form enctype="multipart/form-data" action="{% url 'publications:create_publication' %}" method="post"
+      class="container-lg publication">
     {% csrf_token %}
     <div class="post-header">
         <div class="publication-avatar">

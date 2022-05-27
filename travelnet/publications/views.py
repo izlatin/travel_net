@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView, CreateView
 
 from publications.forms import CreatePublicationForm
 from publications.models import Publication, Attachment
+from rating.models import FollowingRelation
 
 
 class PublicationList(ListView):
@@ -20,7 +21,8 @@ class PublicationList(ListView):
         # иначе кидаем посты из подписок
         q2 = Publication.objects.popular_posts(datetime_created_after=datetime_most_popular_created_before)
 
-        if not self.request.user.is_authenticated or self.request.user.follows.count() == 0:
+        if not self.request.user.is_authenticated or FollowingRelation.objects\
+                .get_subscription_queryset_from_user(self.request.user).count() == 0:
             return q2
         q1 = Publication.objects.user_feed(self.request.user)
         res = (q1 & q2).distinct()

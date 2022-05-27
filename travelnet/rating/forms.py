@@ -10,5 +10,3 @@ class CommentForm(forms.ModelForm):
         labels = {
             'text': 'Ваш комментарий'
         }
-
-
