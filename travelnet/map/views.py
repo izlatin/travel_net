@@ -17,18 +17,13 @@ class PostsView(TemplateView):
 
         prepared_posts = []
         for post in posts:
-            attachment = None
-            attachment_link = None
-
-            for at in post.attachment_set.all():
-                if at.file_type == "Photo":
-                    attachment = at
-                    break
-            if attachment and attachment.file_type == "Photo":
-                attachment_link = attachment.file.url
+            attachments = post.attachment_set.all()
             post = PublicationSerializer(post).data
+            for at in attachments:
+                if at.file_type == "Photo":
+                    post['attachment'] = at.file.url
+                    break
             post["url_for"] = reverse('publications:detail_publication', kwargs={'pk': post['id']})
-            post['attachment'] = attachment_link
             prepared_posts.append(post)
         context['posts'] = prepared_posts
         context['token'] = token
