@@ -1,0 +1,45 @@
+{% load thumbnail %}
+{% load static %}
+
+<form enctype="multipart/form-data" action="" method="post" class="container-lg publication">
+    {% csrf_token %}
+    <div class="post-header">
+        <div class="publication-avatar">
+            {% if user.image %}
+                {% thumbnail user.image "50x50" crop="center" as im %}
+                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"
+                         alt="{{ user }}'s profile picture">
+                {% endthumbnail %}
+            {% endif %}
+        </div>
+        <h4 class="username"><a href="{% url 'users:user_detail' user_id=user.id %}">{{ user.username }}</a></h4><br>
+        <p class="text-muted">Редактируется</p>
+    </div>
+
+    <div class="location">
+        {{ form.location.errors }}
+        {{ form.location.label_tag }}
+        {{ form.location }}
+    </div>
+    <br>
+    <div class="post-main">
+        {{ form.text.errors }}
+        {{ form.text.label_tag }}
+        {{ form.text }}
+    </div>
+    <br>
+    <div class="row px-4 pb-3">
+        {{ form.file.errors }}
+        {{ form.file.label_tag }}
+        {{ form.file }}
+        <small class="text-muted">Добавьте фото к посту, чтобы он мог отображаться на карте популярных постов</small>
+    </div>
+
+    <div class="post-footer row px-3">
+        <div class="d-flex justify-content-center mb-1">
+            <input type="submit" value="Опубликовать!" class=" col-7 btn btn-success publish-button">
+        </div>
+    </div>
+
+    {{ form.media }}
+</form>

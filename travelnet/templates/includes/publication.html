@@ -15,13 +15,16 @@
         </div>
         <h4 class="username"><a
                 href="{% url 'users:user_detail' user_id=post.author.id %}">{{ post.author.username }}</a></h4><br>
-        <p class="text-muted">Опубликованно {{ post.datetime_created }}</p>
+        <p class="text-muted">Опубликовано {{ post.datetime_created }}</p>
+        {% if post.author.id == user.id %}
+            <a href="{% url 'publications:edit_publication' pk=post.id %}" class="float-end">Редактировать пост</a><br>
+        {% endif %}
     </div>
 
     <div class="location">
         {# <img class="point" src="{% static 'img/other/point.png' %}">#}
         <a target="_blank" href="https://maps.yandex.ru/?text={{ post.location.1 }}+{{ post.location.0 }}">Открыть на
-            Яндекс.Карты</a>
+            Яндекс.Картах</a>
         <a href="{% url 'publications:detail_publication' pk=post.id %}" class="float-end">Открыть пост</a>
     </div>
     <br>

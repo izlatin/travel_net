@@ -1,8 +1,9 @@
 import datetime
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from publications.forms import CreatePublicationForm
 from publications.models import Publication, Attachment
@@ -81,3 +82,22 @@ class CreatePublicationView(CreateView):
                 )
 
         return super().form_valid(form)
+
+
+def edit_publication(request, pk):
+    template = 'publications/edit_publication.html'
+    publication = Publication.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = CreatePublicationForm(request.POST, request.FILES, instance=publication)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse_lazy('publications:detail_publication', kwargs={'pk': pk}))
+
+    else:
+        form = CreatePublicationForm(instance=publication)
+        files = request.FILES.getlist('file')
+        for f in files:
+            Attachment.objects.create(
+                author=request.user, publication_id=pk, file_type='Photo', file=f
+            )
+        return render(request, template, context={'form': form})

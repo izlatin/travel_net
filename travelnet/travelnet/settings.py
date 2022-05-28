@@ -5,7 +5,7 @@ from pathlib import Path
 from django.urls import reverse_lazy
 
 env = environ.Env()
-environ.Env.read_env(env_file='.env')
+environ.Env.read_env(env_file='example.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(join(BASE_DIR.parent, '.env'))
@@ -127,7 +127,7 @@ STATICFILES_DIRS = [
 
 # Default primary key field type
 LOGIN_URL = reverse_lazy('users:login')
-LOGIN_REDIRECT_URL = reverse_lazy('users:profile')
+LOGIN_REDIRECT_URL = reverse_lazy('users:user_detail', kwargs={'user_id': 0})
 LOGOUT_REDIRECT_URL = reverse_lazy('users:login')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

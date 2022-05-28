@@ -53,6 +53,8 @@ def profile_edit_success(request):
 
 
 def user_detail(request, user_id):
+    if user_id == 0:
+        return redirect(reverse('users:user_detail', kwargs={'user_id': request.user.id}))
     user = get_user_model().objects.get(pk=user_id)
 
     publication_set = user.publication_set.all()
